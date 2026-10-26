@@ -1,6 +1,6 @@
 # Wellness Portal — Developer Onboarding
 
-_Last updated 18 October 2026._
+_Last updated 26 October 2026._
 
 ## What we are building
 
@@ -99,6 +99,8 @@ These rules protect people who may be in danger. A PR that breaks one is not mer
 - Don't invent clinical guidance, statistics, partner organizations or hotline numbers. Use a labelled placeholder and ask.
 - Don't machine-translate sensitive survivor guidance. Mark Spanish as draft until a reviewer approves it.
 - Keep the status tags (Placeholder, Needs approval) until the content owner signs off.
+- Every visitor-facing sentence (FAQ, privacy text, button labels, messages) must describe what the Portal actually does and has been tested to do. This is the founder's rule. If you change a behavior, update its wording in the same pull request.
+- The About Army Pink link stays optional: never redirect visitors to the main website or make it a condition of using the Portal.
 
 **Code safety**
 

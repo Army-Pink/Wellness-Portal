@@ -34,3 +34,13 @@ Fixed along the way: the Spanish translation of the intro's Quick Exit line neve
 
 - [ ] Get Started, You have found a safe space., Take a breath., There's no rush here., You're all set., However you arrived today, you're welcome here., Enter the portal, Watch the introduction video, Sometimes, life can feel overwhelming., Back to the portal. See `src/lib/es.ts` ("Intro" block). The wording is gender-neutral on purpose ("aquí te damos la bienvenida").
 - `src/test/translations.test.ts` now fails if an Intro or Privacy Choice string loses its Spanish entry.
+
+## Added 26 October 2026: from the founder's final brief
+
+The founder's final FAQ wording is in [`founder-brief-2026-10-26.md`](founder-brief-2026-10-26.md). It replaces the earlier FAQ drafts above. These points still need a decision:
+
+- [ ] **FAQ #3 vs D4.** The brief says "You can also press Esc to activate Quick Exit." Today Esc is ignored while typing, drawing or with a dialog open. Recommended: add "when you aren't typing". Alternative: make Esc always exit.
+- [ ] **FAQ #5 (artwork sharing).** Gallery sharing is not built yet (decision D7). Proposed interim answer: "Your artwork stays private on this device. Sharing to the Anonymous Survivor Art Gallery isn't available yet; when it is, you'll always choose first and see what will be shared."
+- [ ] **FAQ #7.** Must match real behavior: no analytics are switched on and nothing leaves the device today.
+- [ ] **Simulated PIN lock** in Journals and Toolkit. Recommended: remove it for launch (the brief asks for prototype-only features to go).
+- [ ] **Saving labels.** Rename to the brief's terms: Save on This Device, Continue Without Saving, Turn Saving Off, Download My Saved Items.
