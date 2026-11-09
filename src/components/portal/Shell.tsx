@@ -188,6 +188,17 @@ export function Footer() {
         <div>
           <p className="font-semibold text-foreground">Army Pink Wellness Portal</p>
           <p className="mt-1">Clickable prototype for stakeholder review. Not a live service.</p>
+          <a
+            href="https://armypink.org/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-2 inline-flex text-sm font-medium text-primary underline-offset-4 hover:underline"
+          >
+            About Army Pink
+          </a>
+          <p className="mt-1 text-sm text-muted-foreground">
+            Part of Army Pink's Pathway to Freedom.
+          </p>
         </div>
         <div>
           <p className="mb-2 font-semibold text-foreground">Label legend</p>
