@@ -23,6 +23,15 @@ Source: `src/components/portal/PrivacyChoice.tsx`, `src/lib/es.ts`
 | [ ] | Privacy page (`routes/privacy.tsx`) | The Esc key does not leave while you are typing, drawing or have a window open, so a stray key press cannot lose your work. The Quick Exit button always works. | _(page not yet translated)_                                                                                                                                              |
 | [ ] | Footer (`Shell.tsx`)                | No sign-up. No profiles. No trackers. Use Quick Exit or press Esc to leave.                                                                                     | _(footer not yet translated)_                                                                                                                                            |
 
+## AP-20 — Footer line and About Army Pink link
+
+Source: `src/components/portal/Shell.tsx`
+
+|     | Where                | English (draft)                        | Spanish (draft)                               |
+| --- | -------------------- | -------------------------------------- | --------------------------------------------- |
+| [ ] | Footer (`Shell.tsx`) | Part of Army Pink's Pathway to Freedom | _(no approved translation; English is shown)_ |
+| [ ] | Footer (`Shell.tsx`) | About Army Pink                        | _(no approved translation; English is shown)_ |
+
 ## Also pending
 
 - [ ] Quick Exit destination: currently `https://www.weather.com` (`QUICK_EXIT_URL` in `Shell.tsx`)

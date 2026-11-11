@@ -182,11 +182,20 @@ export function Header() {
 
 export function Footer() {
   const t = useT();
+  const tx = useTx();
   return (
     <footer className="mt-20 border-t">
       <div className="mx-auto grid max-w-6xl gap-6 px-4 py-10 text-sm text-muted-foreground md:grid-cols-3">
         <div>
           <p className="font-semibold text-foreground">Army Pink Wellness Portal</p>
+          <p className="mt-1">{tx("Part of Army Pink's Pathway to Freedom")}</p>
+          <a
+            href="https://armypink.org/"
+            rel="noreferrer"
+            className="mt-2 inline-flex min-h-11 items-center underline-offset-4 hover:underline"
+          >
+            {tx("About Army Pink")}
+          </a>
           <p className="mt-1">Clickable prototype for stakeholder review. Not a live service.</p>
         </div>
         <div>
