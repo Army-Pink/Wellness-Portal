@@ -25,6 +25,7 @@ import flowers from "@/assets/partners-flowers.png";
 import { Intro } from "@/components/portal/Intro";
 import { StatusTag, TranslationNote } from "@/components/portal/Shell";
 import { track } from "@/lib/analytics";
+import { faqs } from "@/lib/faq";
 import { useTx } from "@/lib/prefs";
 
 export const Route = createFileRoute("/")({
@@ -132,25 +133,6 @@ function PortalCard({ c }: { c: Card }) {
     </Link>
   );
 }
-
-const faqs = [
-  {
-    q: "Do I need an account to use the Portal?",
-    a: "No. There is no sign-up and no profile. You can use every space without sharing who you are.",
-  },
-  {
-    q: "Is anything I do here saved?",
-    a: "Only items you explicitly choose to save are kept in this browser on this device. You can continue without saving and use every room. Manage or delete saved content in My Saved Items.",
-  },
-  {
-    q: "What does Quick Exit do?",
-    a: "Quick Exit (or the Esc key, when you aren't typing) immediately leaves the Portal and opens a neutral website. It does not erase your browser history.",
-  },
-  {
-    q: "What if I need help right now?",
-    a: "If you're in immediate danger, call 911. The National Domestic Violence Hotline is 1-800-799-7233, or text START to 88788.",
-  },
-];
 
 function HeartLine() {
   return (
