@@ -26,6 +26,12 @@ export const es: Record<string, string> = {
     "No se pudieron cargar los elementos guardados desde este navegador. No se ha eliminado ni enviado nada.",
   "This item can no longer be reopened as an activity.":
     "Este elemento ya no se puede reabrir como actividad.",
+  "Browser storage is unavailable or full. Nothing new was saved. You can continue using every Portal activity without saving.":
+    "El almacenamiento del navegador no está disponible o está lleno. No se guardó nada nuevo. Puedes seguir usando todas las actividades del Portal sin guardar.",
+  "Could not delete saved items. They may still be in this browser. Please try again.":
+    "No se pudieron eliminar los elementos guardados. Es posible que sigan en este navegador. Inténtalo de nuevo.",
+  "Could not export your collection. Please try again.":
+    "No se pudo exportar tu colección. Inténtalo de nuevo.",
   "Loading saved items…": "Cargando elementos guardados…",
   "Saved to My Saved Items on this device.":
     "Guardado en Mis elementos guardados en este dispositivo.",
