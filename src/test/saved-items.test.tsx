@@ -163,7 +163,7 @@ describe("My Saved Items page", () => {
   it("shows an empty state and disables bulk actions", async () => {
     await renderPage(fakeRepo([]));
     expect(screen.getByText("No saved items yet.")).toBeTruthy();
-    expect(screen.getByRole("button", { name: /Download collection/ })).toBeDisabled();
+    expect(screen.getByRole("button", { name: /Download My Saved Items/ })).toBeDisabled();
     expect(screen.getByRole("button", { name: /Delete all/ })).toBeDisabled();
   });
 

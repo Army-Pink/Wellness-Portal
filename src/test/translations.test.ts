@@ -23,6 +23,15 @@ describe("draft Spanish coverage", () => {
 });
 
 // Files moved to typed keys: every t("key") they use needs a draft Spanish entry.
+// AP-21 labels from the founder's brief: no approved Spanish yet, so English shows in Spanish mode.
+const NO_APPROVED_SPANISH = new Set([
+  "notice.translationPending",
+  "saved.download",
+  "saved.turnSavingOff",
+  "saved.saveOnDevice",
+  "privacy.turnSavingOff",
+  "privacy.turnSavingOffHelp",
+]);
 const keysIn = (src: string) =>
   [...src.matchAll(/\bt\(\s*"([a-z][A-Za-z0-9.]+)"/g)].map((m) => m[1]!);
 describe("typed-key Spanish coverage", () => {
@@ -32,7 +41,7 @@ describe("typed-key Spanish coverage", () => {
     ["saved-items", readFileSync("src/routes/saved-items.tsx", "utf8")],
   ])("every %s key has a Spanish entry", (_name, src) => {
     const catalog = esCatalog as Record<string, string>;
-    const missing = keysIn(src).filter((k) => k !== "notice.translationPending" && !catalog[k]);
+    const missing = keysIn(src).filter((k) => !NO_APPROVED_SPANISH.has(k) && !catalog[k]);
     expect(missing).toEqual([]);
     expect(keysIn(src).length).toBeGreaterThan(0);
   });
