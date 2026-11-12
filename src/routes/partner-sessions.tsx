@@ -105,7 +105,7 @@ function Sessions() {
             color={s.color}
             title={s.t}
             sub={`${tx("with")} ${s.who} · ${tx(s.cat)} · ${s.min} min`}
-            onClick={() => toast(tx("Prototype: session video not available yet."))}
+            onClick={() => toast(tx("Session video is not available yet."))}
           />
         ))}
       </div>

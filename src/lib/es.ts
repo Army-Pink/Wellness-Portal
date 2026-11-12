@@ -13,9 +13,7 @@ export const es: Record<string, string> = {
     "Conserva solo las reflexiones, obras de arte y ejercicios completados que elijas guardar, en este navegador y dispositivo. No se requiere cuenta ni correo electrónico.",
   "Explore every room and activity without saving your personal content. Nothing is saved automatically.":
     "Explora todas las salas y actividades sin guardar tu contenido personal. Nada se guarda automáticamente.",
-  "Change saving choice": "Cambiar opción de guardado",
   Room: "Sala",
-  "Download collection": "Descargar colección",
   "Delete all": "Eliminar todo",
   "Delete item": "Eliminar elemento",
   "Open item": "Abrir elemento",

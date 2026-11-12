@@ -82,7 +82,7 @@ function SavedItems() {
           className="h-auto min-h-11 whitespace-normal rounded-full"
           onClick={() => setChanging(!changing)}
         >
-          {t("saved.changeChoice")}
+          {t(preference === "device" ? "saved.turnSavingOff" : "saved.saveOnDevice")}
         </Button>
       </div>
       {changing && (

@@ -90,3 +90,9 @@ test("strict CSP blocks injected inline scripts (XSS defence)", async ({ page, g
   });
   expect(ran).toBe(false);
 });
+
+test("no visitor-facing page calls the Portal a prototype", async ({ page }) => {
+  await page.goto("/privacy");
+  await expect(page.getByText(/prototype/i)).toHaveCount(0);
+  await expect(page.getByRole("contentinfo")).not.toContainText(/prototype/i);
+});

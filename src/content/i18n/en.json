@@ -52,11 +52,10 @@
   "privacy.keepItems": "Keep my saved items",
   "saved.statusDevice": "Device saving enabled. Only items you explicitly save are kept.",
   "saved.statusNone": "Continuing without saving. Existing saved items remain until you delete them.",
-  "saved.changeChoice": "Change saving choice",
   "saved.loading": "Loading saved items…",
   "saved.roomFilter": "Room or activity",
   "saved.allRooms": "All rooms",
-  "saved.download": "Download collection",
+  "saved.download": "Download My Saved Items",
   "saved.deleteAll": "Delete all",
   "saved.deleteItem": "Delete item",
   "saved.deleteOneTitle": "Permanently delete this saved item?",
@@ -67,5 +66,9 @@
   "saved.cannotReopen": "This item can no longer be reopened as an activity.",
   "saved.room": "Room",
   "saved.loadFailed": "Saved items could not be loaded from this browser. Nothing has been deleted or sent anywhere.",
-  "saved.roomEmpty": "Nothing in this room is saved."
+  "saved.roomEmpty": "Nothing in this room is saved.",
+  "saved.turnSavingOff": "Turn Saving Off",
+  "saved.saveOnDevice": "Save on This Device",
+  "privacy.turnSavingOff": "Turn Saving Off",
+  "privacy.turnSavingOffHelp": "Stops future saves. Items you already saved stay on this device until you delete them."
 }

@@ -54,8 +54,6 @@ The founder's final FAQ wording is in [`founder-brief-2026-10-26.md`](founder-br
 - [ ] **FAQ #5 (artwork sharing; interim wording, pending, decision #24).** Gallery sharing is not built yet (decision D7). Proposed interim answer: "Your artwork stays private on this device. Sharing to the Anonymous Survivor Art Gallery isn't available yet; when it is, you'll always choose first and see what will be shared."
 - [ ] **FAQ #7.** Must match real behavior: no analytics are switched on and nothing leaves the device today.
 - [ ] **Simulated PIN lock** in Journals and Toolkit. Recommended: remove it for launch (the brief asks for prototype-only features to go).
-- [ ] **Saving labels.** Rename to the brief's terms: Save on This Device, Continue Without Saving, Turn Saving Off, Download My Saved Items.
-
 ## AP-07b — My Saved Items: error messages (draft Spanish)
 
 Source: `src/lib/es.ts`. Short interface strings; English is the existing wording from the app. Needs native-speaker review.
@@ -65,3 +63,19 @@ Source: `src/lib/es.ts`. Short interface strings; English is the existing wordin
 | [ ] | Browser storage is unavailable or full. Nothing new was saved. You can continue using every Portal activity without saving. | El almacenamiento del navegador no está disponible o está lleno. No se guardó nada nuevo. Puedes seguir usando todas las actividades del Portal sin guardar. |
 | [ ] | Could not delete saved items. They may still be in this browser. Please try again.                                          | No se pudieron eliminar los elementos guardados. Es posible que sigan en este navegador. Inténtalo de nuevo.                                                 |
 | [ ] | Could not export your collection. Please try again.                                                                         | No se pudo exportar tu colección. Inténtalo de nuevo.                                                                                                        |
+- [x] **Saving labels.** Renamed to the brief's terms in AP-21 (see the AP-21 section below).
+
+## AP-21 — Saving terms and prototype statements
+
+The four terms come straight from the founder's brief. The sentences below were written to explain them and still need founder sign-off. No approved Spanish exists, so English is shown in Spanish mode.
+
+|     | Where                                             | English (draft)                                                                           |
+| --- | ------------------------------------------------- | ----------------------------------------------------------------------------------------- |
+| [ ] | Privacy Choice, under Turn Saving Off             | Stops future saves. Items you already saved stay on this device until you delete them.    |
+| [ ] | Privacy page, new "Saving on this device" section | Adapted from FAQ #2 and #6 and the brief's term table. Tagged "Needs approval".           |
+| [ ] | Privacy page, usage measurement                   | "Nothing is measured today." (was "...in this prototype.")                                |
+| [ ] | Partner Sessions toast                            | "Session video is not available yet." (was "Prototype: session video not available yet.") |
+
+- Footer line "Clickable prototype for stakeholder review. Not a live service." removed.
+- The Turn Saving Off button appears on Privacy Choice and My Saved Items only while saving is on; otherwise they show Continue Without Saving / Save on This Device.
+- [ ] **Still contains "prototype" (waiting on the simulated PIN lock decision, #41).** The PIN copy in `Simulated.tsx` ("Prototype only: the PIN isn't stored...") and `routes/journals.tsx` ("simulated in this prototype"), plus the matching `es.ts` entries. Left untouched on purpose. They go when the PIN lock is removed or reworded.

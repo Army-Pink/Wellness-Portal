@@ -52,11 +52,9 @@
   "privacy.keepItems": "Conservar mis elementos guardados",
   "saved.statusDevice": "Guardado en el dispositivo activado. Solo se conservan los elementos que guardes explícitamente.",
   "saved.statusNone": "Continuando sin guardar. Los elementos ya guardados permanecen hasta que los elimines.",
-  "saved.changeChoice": "Cambiar opción de guardado",
   "saved.loading": "Cargando elementos guardados…",
   "saved.roomFilter": "Sala o actividad",
   "saved.allRooms": "Todas las salas",
-  "saved.download": "Descargar colección",
   "saved.deleteAll": "Eliminar todo",
   "saved.deleteItem": "Eliminar elemento",
   "saved.deleteOneTitle": "¿Eliminar permanentemente este elemento guardado?",
@@ -66,5 +64,6 @@
   "notice.translationPending": "Traducción al español en borrador, pendiente de revisión. Algunos contenidos aún están en inglés.",
   "saved.cannotReopen": "Este elemento ya no se puede reabrir como actividad.",
   "saved.loadFailed": "No se pudieron cargar los elementos guardados desde este navegador. No se ha eliminado ni enviado nada.",
-  "saved.roomEmpty": "No hay nada guardado en esta sala."
+  "saved.roomEmpty": "No hay nada guardado en esta sala.",
+  "saved.room": "Sala"
 }

@@ -23,6 +23,8 @@ export function PrivacyChoice({ onChoice }: { onChoice?: () => void }) {
   const tx = useTx(); // provider error text only (dynamic, not a catalog message yet)
   const { choose, remove, error, items, preference } = useSaving();
   const [busy, setBusy] = useState(false);
+  // Saving is already on: the second choice stops future saves (brief term: Turn Saving Off).
+  const turningOff = preference === "device";
   // D5: turning saving off with items present asks whether to keep or delete them.
   const [askExisting, setAskExisting] = useState<"ask" | "confirm-delete" | null>(null);
   const select = async (value: "device" | "none") => {
@@ -72,9 +74,11 @@ export function PrivacyChoice({ onChoice }: { onChoice?: () => void }) {
             className="min-h-12 h-auto w-full whitespace-normal rounded-full px-6 py-3"
           >
             <ArrowRight />
-            {t("privacy.continueWithout")}
+            {t(turningOff ? "privacy.turnSavingOff" : "privacy.continueWithout")}
           </Button>
-          <p className="mt-2 text-sm text-muted-foreground">{t("privacy.continueWithoutHelp")}</p>
+          <p className="mt-2 text-sm text-muted-foreground">
+            {t(turningOff ? "privacy.turnSavingOffHelp" : "privacy.continueWithoutHelp")}
+          </p>
         </div>
       </div>
       <PrivacyWarning />
