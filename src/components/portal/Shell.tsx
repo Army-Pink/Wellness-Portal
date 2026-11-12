@@ -6,7 +6,7 @@ import { usePrefs, useT, useTx, type UIKey } from "@/lib/prefs";
 import { track } from "@/lib/analytics";
 import type { Status } from "@/data/portal";
 
-// Prototype neutral destination — production destination requires approval.
+// Neutral destination — production destination requires approval.
 export const QUICK_EXIT_URL = "https://www.weather.com";
 
 export function quickExit() {
@@ -187,7 +187,6 @@ export function Footer() {
       <div className="mx-auto grid max-w-6xl gap-6 px-4 py-10 text-sm text-muted-foreground md:grid-cols-3">
         <div>
           <p className="font-semibold text-foreground">Army Pink Wellness Portal</p>
-          <p className="mt-1">Clickable prototype for stakeholder review. Not a live service.</p>
           <a
             href="https://armypink.org/"
             target="_blank"

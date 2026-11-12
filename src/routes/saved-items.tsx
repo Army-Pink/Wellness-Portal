@@ -79,7 +79,7 @@ function SavedItems() {
           className="h-auto min-h-11 whitespace-normal rounded-full"
           onClick={() => setChanging(!changing)}
         >
-          {tx("Change saving choice")}
+          {tx(preference === "device" ? "Turn Saving Off" : "Save on This Device")}
         </Button>
       </div>
       {changing && (
@@ -163,7 +163,7 @@ function SavedItems() {
               }}
             >
               <Download />
-              {tx("Download collection")}
+              {tx("Download My Saved Items")}
             </Button>
             <Button
               disabled={!items.length}

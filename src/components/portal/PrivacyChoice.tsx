@@ -22,6 +22,8 @@ export function PrivacyChoice({ onChoice }: { onChoice?: () => void }) {
   const tx = useTx();
   const { choose, remove, error, items, preference } = useSaving();
   const [busy, setBusy] = useState(false);
+  // Saving is already on: the second choice stops future saves (brief term: Turn Saving Off).
+  const turningOff = preference === "device";
   // D5: turning saving off with items present asks whether to keep or delete them.
   const [askExisting, setAskExisting] = useState<"ask" | "confirm-delete" | null>(null);
   const select = async (value: "device" | "none") => {
@@ -79,11 +81,13 @@ export function PrivacyChoice({ onChoice }: { onChoice?: () => void }) {
             className="min-h-12 h-auto w-full whitespace-normal rounded-full px-6 py-3"
           >
             <ArrowRight />
-            {tx("Continue Without Saving")}
+            {tx(turningOff ? "Turn Saving Off" : "Continue Without Saving")}
           </Button>
           <p className="mt-2 text-sm text-muted-foreground">
             {tx(
-              "Explore every room and activity without saving your personal content. Nothing is saved automatically.",
+              turningOff
+                ? "Stops future saves. Items you already saved stay on this device until you delete them."
+                : "Explore every room and activity without saving your personal content. Nothing is saved automatically.",
             )}
           </p>
         </div>

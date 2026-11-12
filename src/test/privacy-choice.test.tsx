@@ -61,11 +61,20 @@ describe("YOUR PRIVACY, YOUR CHOICE", () => {
     expect(await repo.getPreference()).toBe("device");
   });
 
+  it("shows Turn Saving Off, explaining existing items are kept, once saving is on", async () => {
+    renderChoice();
+    fireEvent.click(screen.getByText("Save on This Device"));
+    await waitFor(() => expect(screen.getByTestId("state").textContent).toBe("device:0"));
+    expect(screen.getByText("Turn Saving Off")).toBeInTheDocument();
+    expect(screen.queryByText("Continue Without Saving")).not.toBeInTheDocument();
+    expect(screen.getByText(/Items you already saved stay on this device/)).toBeInTheDocument();
+  });
+
   it("D5: keeping saved items when turning saving off", async () => {
     await seedSavedItem();
     renderChoice();
     await waitFor(() => expect(screen.getByTestId("state").textContent).toBe("device:1"));
-    fireEvent.click(screen.getByText("Continue Without Saving"));
+    fireEvent.click(screen.getByText("Turn Saving Off"));
     fireEvent.click(await screen.findByText("Keep my saved items"));
     await waitFor(() => expect(screen.getByTestId("state").textContent).toBe("none:1"));
     expect(await repo.getSavedItems()).toHaveLength(1);
@@ -75,7 +84,7 @@ describe("YOUR PRIVACY, YOUR CHOICE", () => {
     await seedSavedItem();
     renderChoice();
     await waitFor(() => expect(screen.getByTestId("state").textContent).toBe("device:1"));
-    fireEvent.click(screen.getByText("Continue Without Saving"));
+    fireEvent.click(screen.getByText("Turn Saving Off"));
     fireEvent.click(await screen.findByText("Delete them now"));
     expect(await repo.getSavedItems()).toHaveLength(1); // nothing deleted yet
     fireEvent.click(await screen.findByText("Delete permanently"));
