@@ -10,7 +10,7 @@ test.describe("device-only saving", () => {
 
     await page.goto("/saved-items");
     await page.reload(); // persisted, not just in memory
-    await page.getByRole("button", { name: "Open item" }).click();
+    await page.getByRole("button", { name: /^Open item: / }).click();
     await expect(
       page.getByRole("heading", { name: "Breathing exercise (placeholder)" }),
     ).toBeVisible();
@@ -21,7 +21,7 @@ test.describe("device-only saving", () => {
 
     await page.getByRole("button", { name: "My Saved Items" }).click();
     const download = page.waitForEvent("download");
-    await page.getByRole("button", { name: "Download collection" }).click();
+    await page.getByRole("button", { name: "Download My Saved Items" }).click();
     const file = await download;
     expect(file.suggestedFilename()).toBe("wellness-portal-saved-items.zip");
     const zip = readFileSync((await file.path())!);

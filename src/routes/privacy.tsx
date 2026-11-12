@@ -71,11 +71,27 @@ function Privacy() {
         </div>
       </section>
       <section className="mt-6 rounded-3xl border p-6">
+        <h2 className="text-lg font-bold">Saving on this device</h2>
+        <p className="mt-2 text-muted-foreground">
+          Your activity is not automatically saved. You can choose Save on This Device to keep
+          supported items in this browser on this device, or Continue Without Saving to use the
+          Portal without intentionally saving items.
+        </p>
+        <p className="mt-2 text-muted-foreground">
+          Turn Saving Off stops future saves. Items you already saved stay on this device until you
+          delete them. Download My Saved Items gives you a ZIP of your saved artwork images,
+          readable text files and a simple index. It is built in your browser and not uploaded.
+        </p>
+        <div className="mt-3">
+          <StatusTag status="approval" note="saving wording" />
+        </div>
+      </section>
+      <section className="mt-6 rounded-3xl border p-6">
         <h2 className="text-lg font-bold">Usage measurement</h2>
         <p className="mt-2 text-muted-foreground">
           In the future, the Portal may count anonymous actions (for example, "a page was opened")
           to improve it — never the content of what you write, draw or search, and never who you
-          are. Nothing is measured in this prototype.
+          are. Nothing is measured today.
         </p>
       </section>
     </PageShell>

@@ -13,14 +13,23 @@ export const es: Record<string, string> = {
     "Conserva solo las reflexiones, obras de arte y ejercicios completados que elijas guardar, en este navegador y dispositivo. No se requiere cuenta ni correo electrónico.",
   "Explore every room and activity without saving your personal content. Nothing is saved automatically.":
     "Explora todas las salas y actividades sin guardar tu contenido personal. Nada se guarda automáticamente.",
-  "Change saving choice": "Cambiar opción de guardado",
-  "Room or activity": "Sala o actividad",
-  "Download collection": "Descargar colección",
+  Room: "Sala",
   "Delete all": "Eliminar todo",
   "Delete item": "Eliminar elemento",
   "Open item": "Abrir elemento",
   "Return to activity": "Volver a la actividad",
   "No saved items yet.": "Aún no hay elementos guardados.",
+  "Nothing in this room is saved.": "No hay nada guardado en esta sala.",
+  "Saved items could not be loaded from this browser. Nothing has been deleted or sent anywhere.":
+    "No se pudieron cargar los elementos guardados desde este navegador. No se ha eliminado ni enviado nada.",
+  "This item can no longer be reopened as an activity.":
+    "Este elemento ya no se puede reabrir como actividad.",
+  "Browser storage is unavailable or full. Nothing new was saved. You can continue using every Portal activity without saving.":
+    "El almacenamiento del navegador no está disponible o está lleno. No se guardó nada nuevo. Puedes seguir usando todas las actividades del Portal sin guardar.",
+  "Could not delete saved items. They may still be in this browser. Please try again.":
+    "No se pudieron eliminar los elementos guardados. Es posible que sigan en este navegador. Inténtalo de nuevo.",
+  "Could not export your collection. Please try again.":
+    "No se pudo exportar tu colección. Inténtalo de nuevo.",
   "Loading saved items…": "Cargando elementos guardados…",
   "Saved to My Saved Items on this device.":
     "Guardado en Mis elementos guardados en este dispositivo.",

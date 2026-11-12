@@ -15,8 +15,9 @@ import {
   AlertDialogAction,
 } from "@/components/ui/alert-dialog";
 import { deliverCollection } from "@/lib/export/collection";
-import { itemImage, itemText } from "@/lib/storage/schema";
-import { useTx } from "@/lib/prefs";
+import { itemImage, itemText, safeInternalPath } from "@/lib/storage/schema";
+import { groupSavedItems } from "@/lib/saved-items-grouping";
+import { usePrefs, useTx } from "@/lib/prefs";
 
 export const Route = createFileRoute("/saved-items")({
   head: () => ({
@@ -40,7 +41,8 @@ export const Route = createFileRoute("/saved-items")({
 });
 
 function SavedItems() {
-  const tx = useTx();
+  const { t } = usePrefs();
+  const tx = useTx(); // dynamic text only: saved item names, rooms and provider errors
   const { items, ready, error, preference, remove, exportCollection } = useSaving();
   const [filter, setFilter] = useState("");
   const [opened, setOpened] = useState<string | null>(null);
@@ -48,8 +50,13 @@ function SavedItems() {
   const [changing, setChanging] = useState(false);
   const [busy, setBusy] = useState(false);
   const [exportError, setExportError] = useState("");
-  const rooms = [...new Set(items.map((x) => x.room))];
+  const groups = groupSavedItems(items);
+  // Filter by stable room id; fall back to all rooms if that room has no items left.
+  const visible = groups.filter((g) => !filter || g.roomId === filter);
+  const shown = visible.length ? visible : groups;
   const selected = items.find((x) => x.id === opened);
+  const selectedPath = selected ? safeInternalPath(selected.source) : undefined;
+  const loadFailed = ready && !!error && !items.length && !exportError;
   const deleteConfirmed = async () => {
     if (!pending) return;
     setBusy(true);
@@ -68,18 +75,14 @@ function SavedItems() {
       <PrivacyWarning />
       <div className="mt-4 flex flex-wrap items-center gap-3">
         <p className="text-sm text-muted-foreground">
-          {tx(
-            preference === "device"
-              ? "Device saving enabled. Only items you explicitly save are kept."
-              : "Continuing without saving. Existing saved items remain until you delete them.",
-          )}
+          {t(preference === "device" ? "saved.statusDevice" : "saved.statusNone")}
         </p>
         <Button
           variant="outline"
           className="h-auto min-h-11 whitespace-normal rounded-full"
           onClick={() => setChanging(!changing)}
         >
-          {tx("Change saving choice")}
+          {t(preference === "device" ? "saved.turnSavingOff" : "saved.saveOnDevice")}
         </Button>
       </div>
       {changing && (
@@ -94,13 +97,13 @@ function SavedItems() {
       )}
       {!ready ? (
         <p role="status" className="py-8">
-          {tx("Loading saved items…")}
+          {t("saved.loading")}
         </p>
       ) : selected ? (
         <article className="mt-8 space-y-5">
           <Button variant="ghost" className="rounded-full" onClick={() => setOpened(null)}>
             <ArrowLeft />
-            {tx("My Saved Items")}
+            {t("nav.savedItems")}
           </Button>
           <h2 className="break-words text-xl font-bold">{tx(selected.activity)}</h2>
           <p className="text-sm text-muted-foreground">
@@ -119,16 +122,20 @@ function SavedItems() {
             </p>
           )}
           <div className="flex flex-wrap gap-3">
-            <Button asChild variant="outline" className="rounded-full">
-              <Link to={selected.source}>{tx("Return to activity")}</Link>
-            </Button>
+            {selectedPath ? (
+              <Button asChild variant="outline" className="rounded-full">
+                <Link to={selectedPath}>{t("saved.returnToActivity")}</Link>
+              </Button>
+            ) : (
+              <p className="text-sm text-muted-foreground">{t("saved.cannotReopen")}</p>
+            )}
             <Button
               variant="outline"
               className="rounded-full"
               onClick={() => setPending(selected.id)}
             >
               <Trash2 />
-              {tx("Delete item")}
+              {t("saved.deleteItem")}
             </Button>
           </div>
         </article>
@@ -136,15 +143,17 @@ function SavedItems() {
         <>
           <div className="my-8 flex flex-wrap items-end gap-3">
             <label className="flex flex-col gap-2 text-sm font-medium">
-              {tx("Room or activity")}
+              {t("saved.room")}
               <select
                 value={filter}
                 onChange={(e) => setFilter(e.target.value)}
                 className="min-h-11 max-w-full rounded-lg border bg-card px-3 text-foreground"
               >
-                <option value="">{tx("All rooms")}</option>
-                {rooms.map((room) => (
-                  <option key={room}>{room}</option>
+                <option value="">{t("saved.allRooms")}</option>
+                {groups.map((g) => (
+                  <option key={g.roomId} value={g.roomId}>
+                    {tx(g.room)}
+                  </option>
                 ))}
               </select>
             </label>
@@ -163,7 +172,7 @@ function SavedItems() {
               }}
             >
               <Download />
-              {tx("Download collection")}
+              {t("saved.download")}
             </Button>
             <Button
               disabled={!items.length}
@@ -172,43 +181,61 @@ function SavedItems() {
               onClick={() => setPending("all")}
             >
               <Trash2 />
-              {tx("Delete all")}
+              {t("saved.deleteAll")}
             </Button>
           </div>
-          {!items.length && (
-            <p className="py-8 text-muted-foreground">{tx("No saved items yet.")}</p>
+          {!items.length && !loadFailed && (
+            <p className="py-8 text-muted-foreground">{t("saved.empty")}</p>
           )}
-          <div className="grid gap-4 sm:grid-cols-2">
-            {items
-              .filter((x) => !filter || x.room === filter)
-              .map((item) => (
-                <article key={item.id} className="min-w-0 rounded-lg border bg-card p-5">
-                  <p className="text-sm text-muted-foreground">
-                    {tx(item.room)} · {new Date(item.createdAt).toLocaleDateString()}
-                  </p>
-                  <h3 className="mt-2 break-words text-lg font-semibold">{tx(item.activity)}</h3>
-                  <div className="mt-4 flex flex-wrap gap-2">
-                    <Button
-                      variant="secondary"
-                      className="rounded-full"
-                      onClick={() => setOpened(item.id)}
-                    >
-                      <FolderOpen />
-                      {tx("Open item")}
-                    </Button>
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      aria-label={`${tx("Delete item")}: ${item.activity}`}
-                      title={tx("Delete item")}
-                      className="rounded-full"
-                      onClick={() => setPending(item.id)}
-                    >
-                      <Trash2 />
-                    </Button>
-                  </div>
-                </article>
-              ))}
+          {loadFailed && <p className="py-8 text-muted-foreground">{t("saved.loadFailed")}</p>}
+          {filter && !visible.length && groups.length > 0 && (
+            <p className="py-4 text-muted-foreground">{t("saved.roomEmpty")}</p>
+          )}
+          <div className="space-y-10">
+            {shown.map((group) => (
+              <section key={group.roomId} aria-labelledby={`room-${group.roomId}`}>
+                <h2 id={`room-${group.roomId}`} className="break-words text-xl font-bold">
+                  {tx(group.room)} ({group.count})
+                </h2>
+                <div className="mt-4 space-y-6">
+                  {group.activities.map((activity) => (
+                    <div key={activity.activityId}>
+                      <h3 className="break-words text-lg font-semibold">{tx(activity.activity)}</h3>
+                      <ul className="mt-3 grid gap-4 sm:grid-cols-2">
+                        {activity.items.map((item) => (
+                          <li key={item.id} className="min-w-0 rounded-lg border bg-card p-5">
+                            <p className="text-sm text-muted-foreground">
+                              {new Date(item.createdAt).toLocaleDateString()}
+                            </p>
+                            <div className="mt-4 flex flex-wrap gap-2">
+                              <Button
+                                variant="secondary"
+                                className="rounded-full"
+                                aria-label={`${t("saved.openItem")}: ${item.activity}`}
+                                onClick={() => setOpened(item.id)}
+                              >
+                                <FolderOpen />
+                                {t("saved.openItem")}
+                              </Button>
+                              <Button
+                                variant="ghost"
+                                size="icon"
+                                aria-label={`${t("saved.deleteItem")}: ${item.activity}`}
+                                title={t("saved.deleteItem")}
+                                className="rounded-full"
+                                onClick={() => setPending(item.id)}
+                              >
+                                <Trash2 />
+                              </Button>
+                            </div>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  ))}
+                </div>
+              </section>
+            ))}
           </div>
         </>
       )}
@@ -220,18 +247,12 @@ function SavedItems() {
       >
         <AlertDialogContent className="max-w-[calc(100%-2rem)] rounded-lg sm:max-w-lg">
           <AlertDialogTitle>
-            {tx(
-              pending === "all"
-                ? "Permanently delete all saved items?"
-                : "Permanently delete this saved item?",
-            )}
+            {t(pending === "all" ? "privacy.deleteAllTitle" : "saved.deleteOneTitle")}
           </AlertDialogTitle>
-          <AlertDialogDescription>
-            {tx("This cannot be undone. Downloaded or shared copies are not removed.")}
-          </AlertDialogDescription>
+          <AlertDialogDescription>{t("privacy.cannotUndo")}</AlertDialogDescription>
           <AlertDialogFooter>
             <AlertDialogCancel disabled={busy} className="rounded-full">
-              {tx("Cancel")}
+              {t("action.cancel")}
             </AlertDialogCancel>
             <AlertDialogAction
               disabled={busy}
@@ -241,7 +262,7 @@ function SavedItems() {
                 void deleteConfirmed();
               }}
             >
-              {tx(busy ? "Deleting…" : "Delete permanently")}
+              {t(busy ? "action.deleting" : "action.deletePermanently")}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
