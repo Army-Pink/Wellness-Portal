@@ -8,12 +8,15 @@ import {
 } from "react";
 import { track } from "./analytics";
 import { es } from "./es";
+import { isLang, translate, type Lang, type TFunction } from "./i18n";
 
-export type Lang = "en" | "es";
+export type { Lang };
 export type Theme = "light" | "dark";
 
 type Prefs = {
   lang: Lang;
+  /** Typed lookup: unknown keys fail the typecheck; Spanish falls back to English. */
+  t: TFunction;
   setLang: (l: Lang) => void;
   theme: Theme;
   setTheme: (t: Theme) => void;
@@ -32,8 +35,8 @@ export function PrefsProvider({ children }: { children: ReactNode }) {
   const [reduceMotion, setReduceMotion] = useState(false);
 
   useEffect(() => {
-    const l = localStorage.getItem("wp-lang") as Lang | null;
-    if (l) setLangS(l);
+    const l = localStorage.getItem("wp-lang");
+    if (isLang(l)) setLangS(l);
   }, []);
 
   useEffect(() => {
@@ -59,6 +62,7 @@ export function PrefsProvider({ children }: { children: ReactNode }) {
     <Ctx.Provider
       value={{
         lang,
+        t: (key) => translate(lang, key),
         setLang,
         theme,
         setTheme,
@@ -76,6 +80,7 @@ export function PrefsProvider({ children }: { children: ReactNode }) {
 // Safe fallback (e.g. during hot reload when the provider remounts) instead of blanking the page.
 const fallbackPrefs = {
   lang: "en",
+  t: (key: Parameters<TFunction>[0]) => translate("en", key),
   setLang: () => {},
   theme: "dark",
   setTheme: () => {},
