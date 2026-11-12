@@ -15,7 +15,8 @@ import {
   AlertDialogAction,
 } from "@/components/ui/alert-dialog";
 import { deliverCollection } from "@/lib/export/collection";
-import { itemImage, itemText } from "@/lib/storage/schema";
+import { itemImage, itemText, safeInternalPath } from "@/lib/storage/schema";
+import { groupSavedItems } from "@/lib/saved-items-grouping";
 import { useTx } from "@/lib/prefs";
 
 export const Route = createFileRoute("/saved-items")({
@@ -48,8 +49,13 @@ function SavedItems() {
   const [changing, setChanging] = useState(false);
   const [busy, setBusy] = useState(false);
   const [exportError, setExportError] = useState("");
-  const rooms = [...new Set(items.map((x) => x.room))];
+  const groups = groupSavedItems(items);
+  // Filter by stable room id; fall back to all rooms if that room has no items left.
+  const visible = groups.filter((g) => !filter || g.roomId === filter);
+  const shown = visible.length ? visible : groups;
   const selected = items.find((x) => x.id === opened);
+  const selectedPath = selected ? safeInternalPath(selected.source) : undefined;
+  const loadFailed = ready && !!error && !items.length && !exportError;
   const deleteConfirmed = async () => {
     if (!pending) return;
     setBusy(true);
@@ -119,9 +125,15 @@ function SavedItems() {
             </p>
           )}
           <div className="flex flex-wrap gap-3">
-            <Button asChild variant="outline" className="rounded-full">
-              <Link to={selected.source}>{tx("Return to activity")}</Link>
-            </Button>
+            {selectedPath ? (
+              <Button asChild variant="outline" className="rounded-full">
+                <Link to={selectedPath}>{tx("Return to activity")}</Link>
+              </Button>
+            ) : (
+              <p className="text-sm text-muted-foreground">
+                {tx("This item can no longer be reopened as an activity.")}
+              </p>
+            )}
             <Button
               variant="outline"
               className="rounded-full"
@@ -136,15 +148,17 @@ function SavedItems() {
         <>
           <div className="my-8 flex flex-wrap items-end gap-3">
             <label className="flex flex-col gap-2 text-sm font-medium">
-              {tx("Room or activity")}
+              {tx("Room")}
               <select
                 value={filter}
                 onChange={(e) => setFilter(e.target.value)}
                 className="min-h-11 max-w-full rounded-lg border bg-card px-3 text-foreground"
               >
                 <option value="">{tx("All rooms")}</option>
-                {rooms.map((room) => (
-                  <option key={room}>{room}</option>
+                {groups.map((g) => (
+                  <option key={g.roomId} value={g.roomId}>
+                    {tx(g.room)}
+                  </option>
                 ))}
               </select>
             </label>
@@ -175,40 +189,64 @@ function SavedItems() {
               {tx("Delete all")}
             </Button>
           </div>
-          {!items.length && (
+          {!items.length && !loadFailed && (
             <p className="py-8 text-muted-foreground">{tx("No saved items yet.")}</p>
           )}
-          <div className="grid gap-4 sm:grid-cols-2">
-            {items
-              .filter((x) => !filter || x.room === filter)
-              .map((item) => (
-                <article key={item.id} className="min-w-0 rounded-lg border bg-card p-5">
-                  <p className="text-sm text-muted-foreground">
-                    {tx(item.room)} · {new Date(item.createdAt).toLocaleDateString()}
-                  </p>
-                  <h3 className="mt-2 break-words text-lg font-semibold">{tx(item.activity)}</h3>
-                  <div className="mt-4 flex flex-wrap gap-2">
-                    <Button
-                      variant="secondary"
-                      className="rounded-full"
-                      onClick={() => setOpened(item.id)}
-                    >
-                      <FolderOpen />
-                      {tx("Open item")}
-                    </Button>
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      aria-label={`${tx("Delete item")}: ${item.activity}`}
-                      title={tx("Delete item")}
-                      className="rounded-full"
-                      onClick={() => setPending(item.id)}
-                    >
-                      <Trash2 />
-                    </Button>
-                  </div>
-                </article>
-              ))}
+          {loadFailed && (
+            <p className="py-8 text-muted-foreground">
+              {tx(
+                "Saved items could not be loaded from this browser. Nothing has been deleted or sent anywhere.",
+              )}
+            </p>
+          )}
+          {filter && !visible.length && groups.length > 0 && (
+            <p className="py-4 text-muted-foreground">{tx("Nothing in this room is saved.")}</p>
+          )}
+          <div className="space-y-10">
+            {shown.map((group) => (
+              <section key={group.roomId} aria-labelledby={`room-${group.roomId}`}>
+                <h2 id={`room-${group.roomId}`} className="break-words text-xl font-bold">
+                  {tx(group.room)} ({group.count})
+                </h2>
+                <div className="mt-4 space-y-6">
+                  {group.activities.map((activity) => (
+                    <div key={activity.activityId}>
+                      <h3 className="break-words text-lg font-semibold">{tx(activity.activity)}</h3>
+                      <ul className="mt-3 grid gap-4 sm:grid-cols-2">
+                        {activity.items.map((item) => (
+                          <li key={item.id} className="min-w-0 rounded-lg border bg-card p-5">
+                            <p className="text-sm text-muted-foreground">
+                              {new Date(item.createdAt).toLocaleDateString()}
+                            </p>
+                            <div className="mt-4 flex flex-wrap gap-2">
+                              <Button
+                                variant="secondary"
+                                className="rounded-full"
+                                aria-label={`${tx("Open item")}: ${item.activity}`}
+                                onClick={() => setOpened(item.id)}
+                              >
+                                <FolderOpen />
+                                {tx("Open item")}
+                              </Button>
+                              <Button
+                                variant="ghost"
+                                size="icon"
+                                aria-label={`${tx("Delete item")}: ${item.activity}`}
+                                title={tx("Delete item")}
+                                className="rounded-full"
+                                onClick={() => setPending(item.id)}
+                              >
+                                <Trash2 />
+                              </Button>
+                            </div>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  ))}
+                </div>
+              </section>
+            ))}
           </div>
         </>
       )}

@@ -14,13 +14,18 @@ export const es: Record<string, string> = {
   "Explore every room and activity without saving your personal content. Nothing is saved automatically.":
     "Explora todas las salas y actividades sin guardar tu contenido personal. Nada se guarda automáticamente.",
   "Change saving choice": "Cambiar opción de guardado",
-  "Room or activity": "Sala o actividad",
+  Room: "Sala",
   "Download collection": "Descargar colección",
   "Delete all": "Eliminar todo",
   "Delete item": "Eliminar elemento",
   "Open item": "Abrir elemento",
   "Return to activity": "Volver a la actividad",
   "No saved items yet.": "Aún no hay elementos guardados.",
+  "Nothing in this room is saved.": "No hay nada guardado en esta sala.",
+  "Saved items could not be loaded from this browser. Nothing has been deleted or sent anywhere.":
+    "No se pudieron cargar los elementos guardados desde este navegador. No se ha eliminado ni enviado nada.",
+  "This item can no longer be reopened as an activity.":
+    "Este elemento ya no se puede reabrir como actividad.",
   "Loading saved items…": "Cargando elementos guardados…",
   "Saved to My Saved Items on this device.":
     "Guardado en Mis elementos guardados en este dispositivo.",
