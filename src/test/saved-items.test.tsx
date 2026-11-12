@@ -9,6 +9,7 @@ import {
 } from "@tanstack/react-router";
 import { afterEach, describe, expect, it } from "vitest";
 import { Route as SavedRoute } from "@/routes/saved-items";
+import { PrefsProvider } from "@/lib/prefs";
 import { SavingProvider } from "@/components/portal/SavingProvider";
 import { groupSavedItems } from "@/lib/saved-items-grouping";
 import { SCHEMA_VERSION, safeInternalPath, type SavedItem } from "@/lib/storage/schema";
@@ -71,15 +72,20 @@ async function renderPage(repo: SavedItemsRepository) {
     history: createMemoryHistory({ initialEntries: ["/saved-items"] }),
   });
   render(
-    <SavingProvider repository={repo}>
-      <RouterProvider router={router} />
-    </SavingProvider>,
+    <PrefsProvider>
+      <SavingProvider repository={repo}>
+        <RouterProvider router={router} />
+      </SavingProvider>
+    </PrefsProvider>,
   );
   await waitFor(() => expect(screen.queryByText("Loading saved items…")).toBeNull());
   return router;
 }
 
-afterEach(cleanup);
+afterEach(() => {
+  cleanup();
+  localStorage.clear();
+});
 
 describe("groupSavedItems", () => {
   it("groups by room then activity, keeping newest first", () => {
@@ -159,6 +165,36 @@ describe("My Saved Items page", () => {
     expect(screen.getByText("No saved items yet.")).toBeTruthy();
     expect(screen.getByRole("button", { name: /Download collection/ })).toBeDisabled();
     expect(screen.getByRole("button", { name: /Delete all/ })).toBeDisabled();
+  });
+
+  it("returns to the list, not a blank page, after the opened item is deleted", async () => {
+    await renderPage(fakeRepo([make("journals", "letting-go")]));
+    fireEvent.click(screen.getByRole("button", { name: "Open item: Letting go" }));
+    fireEvent.click(screen.getByRole("button", { name: "Delete item" }));
+    fireEvent.click(screen.getByRole("button", { name: "Delete permanently" }));
+    await waitFor(() => expect(screen.getByText("No saved items yet.")).toBeTruthy());
+  });
+
+  it("keeps saved content out of the error and unreadable-link messages", async () => {
+    await renderPage(fakeRepo([], true));
+    expect(document.body.textContent).not.toMatch(/note-|boom/);
+  });
+
+  it("shows Spanish empty, error and cannot-reopen messages", async () => {
+    localStorage.setItem("wp-lang", "es");
+    await renderPage(fakeRepo([], true));
+    expect(screen.getByText(/No se pudieron cargar los elementos guardados/)).toBeTruthy();
+    expect(screen.getByRole("alert").textContent).toMatch(/almacenamiento del navegador/);
+    expect(document.body.textContent).not.toMatch(/boom/);
+    cleanup();
+    await renderPage(fakeRepo([]));
+    expect(screen.getByText("Aún no hay elementos guardados.")).toBeTruthy();
+    cleanup();
+    await renderPage(
+      fakeRepo([make("journals", "letting-go", { source: "//evil.example/x" } as never)]),
+    );
+    fireEvent.click(screen.getByRole("button", { name: /Abrir elemento/ }));
+    expect(screen.getByText("Este elemento ya no se puede reabrir como actividad.")).toBeTruthy();
   });
 
   it("shows a content-free error, not the empty state, when loading fails", async () => {

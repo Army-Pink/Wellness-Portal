@@ -53,3 +53,13 @@ The founder's final FAQ wording is in [`founder-brief-2026-10-26.md`](founder-br
 - [ ] **FAQ #7.** Must match real behavior: no analytics are switched on and nothing leaves the device today.
 - [ ] **Simulated PIN lock** in Journals and Toolkit. Recommended: remove it for launch (the brief asks for prototype-only features to go).
 - [ ] **Saving labels.** Rename to the brief's terms: Save on This Device, Continue Without Saving, Turn Saving Off, Download My Saved Items.
+
+## AP-07b — My Saved Items: error messages (draft Spanish)
+
+Source: `src/lib/es.ts`. Short interface strings; English is the existing wording from the app. Needs native-speaker review.
+
+|     | English (existing)                                                                                                          | Spanish (draft)                                                                                                                                              |
+| --- | --------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| [ ] | Browser storage is unavailable or full. Nothing new was saved. You can continue using every Portal activity without saving. | El almacenamiento del navegador no está disponible o está lleno. No se guardó nada nuevo. Puedes seguir usando todas las actividades del Portal sin guardar. |
+| [ ] | Could not delete saved items. They may still be in this browser. Please try again.                                          | No se pudieron eliminar los elementos guardados. Es posible que sigan en este navegador. Inténtalo de nuevo.                                                 |
+| [ ] | Could not export your collection. Please try again.                                                                         | No se pudo exportar tu colección. Inténtalo de nuevo.                                                                                                        |
