@@ -33,6 +33,15 @@ const internalPath = z
   .max(300)
   .regex(/^\/(?!\/)[A-Za-z0-9/_-]*$/);
 
+/**
+ * Returns the path only if it is a same-origin Portal path, else undefined.
+ * Re-checked when reopening an item, even though records are validated on read.
+ */
+export function safeInternalPath(source: unknown): string | undefined {
+  const parsed = internalPath.safeParse(source);
+  return parsed.success ? parsed.data : undefined;
+}
+
 const imageDataUrl = z
   .string()
   .max(LIMITS.imageDataUrl)
