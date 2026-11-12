@@ -22,20 +22,28 @@ function dataUrlToBytes(dataUrl: string): { bytes: Uint8Array; ext: "png" | "jpg
 /**
  * Builds the export archive entirely in the browser (ADR 0001, D3):
  * index.html (readable on any device), manifest.json (machine-readable,
- * no image data) and images/*. Nothing is uploaded.
+ * no image data), images/* and one texts/*.txt per item that has text.
+ * Nothing is uploaded.
  */
 export function buildCollectionZip(items: SavedItem[], exportedAt = new Date()): Blob {
   const files: Zippable = {};
   const manifestItems = items.map((item, n) => {
+    const name = String(n + 1).padStart(3, "0");
     const image = itemImage(item);
     let imageFile: string | undefined;
     if (image) {
       const { bytes, ext } = dataUrlToBytes(image);
-      imageFile = `images/${String(n + 1).padStart(3, "0")}.${ext}`;
+      imageFile = `images/${name}.${ext}`;
       files[imageFile] = [bytes, { level: 0 }]; // already compressed
     }
+    const text = itemText(item);
+    let textFile: string | undefined;
+    if (text) {
+      textFile = `texts/${name}.txt`;
+      files[textFile] = strToU8(text);
+    }
     const { payload: _payload, ...meta } = item;
-    return { ...meta, text: itemText(item), imageFile };
+    return { ...meta, text, imageFile, textFile };
   });
 
   const sections = manifestItems

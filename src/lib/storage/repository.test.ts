@@ -223,7 +223,7 @@ describe("storage failures", () => {
 
 describe("exportSavedItems", () => {
   beforeEach(enableSaving);
-  it("builds a ZIP with readable HTML, manifest and image files", async () => {
+  it("builds a ZIP with readable HTML, manifest, image files and a text file", async () => {
     await repo.saveItem({ ...reflection, payload: { text: "<script>alert(1)</script>" } });
     await new Promise((r) => setTimeout(r, 5)); // distinct createdAt for a stable order
     await repo.saveItem(artwork);
@@ -231,7 +231,13 @@ describe("exportSavedItems", () => {
     expect(blob.type).toBe("application/zip");
     const files = unzipSync(await bytes(blob));
     // Newest first, so the artwork (saved last) is item 001.
-    expect(Object.keys(files).sort()).toEqual(["images/001.png", "index.html", "manifest.json"]);
+    expect(Object.keys(files).sort()).toEqual([
+      "images/001.png",
+      "index.html",
+      "manifest.json",
+      "texts/002.txt",
+    ]);
+    expect(strFromU8(files["texts/002.txt"]!)).toBe("<script>alert(1)</script>");
 
     const html = strFromU8(files["index.html"]!);
     expect(html).toContain("&lt;script&gt;alert(1)&lt;/script&gt;");
