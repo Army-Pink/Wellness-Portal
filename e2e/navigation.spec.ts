@@ -45,6 +45,15 @@ test.describe("anonymous navigation", () => {
   });
 });
 
+test("footer links to Army Pink without leaving the Portal", async ({ page }) => {
+  await page.goto("/");
+  const about = page.getByRole("link", { name: "About Army Pink" });
+  await expect(about).toHaveAttribute("href", "https://armypink.org/");
+  await expect(page.getByText("Part of Army Pink's Pathway to Freedom")).toBeVisible();
+  await expect(page).toHaveURL("/");
+  await expect(page.locator("#main")).toBeVisible();
+});
+
 test.describe("Quick Exit", () => {
   test("button replaces the page with the neutral site", async ({ page }) => {
     await page.goto("/privacy");
