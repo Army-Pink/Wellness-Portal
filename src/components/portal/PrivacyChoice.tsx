@@ -9,7 +9,7 @@ import {
   AlertDialogFooter,
   AlertDialogCancel,
 } from "@/components/ui/alert-dialog";
-import { useTx } from "@/lib/prefs";
+import { usePrefs, useTx } from "@/lib/prefs";
 import { PRIVACY_WARNING } from "@/lib/privacy-copy";
 import { useSaving } from "./SavingProvider";
 
@@ -19,7 +19,8 @@ export function PrivacyWarning() {
 }
 
 export function PrivacyChoice({ onChoice }: { onChoice?: () => void }) {
-  const tx = useTx();
+  const { t } = usePrefs();
+  const tx = useTx(); // provider error text only (dynamic, not a catalog message yet)
   const { choose, remove, error, items, preference } = useSaving();
   const [busy, setBusy] = useState(false);
   // D5: turning saving off with items present asks whether to keep or delete them.
@@ -49,12 +50,8 @@ export function PrivacyChoice({ onChoice }: { onChoice?: () => void }) {
   };
   return (
     <div className="w-full space-y-5">
-      <h2 className="text-2xl font-bold sm:text-3xl">{tx("YOUR PRIVACY, YOUR CHOICE")}</h2>
-      <p className="text-base text-muted-foreground">
-        {tx(
-          "Explore the entire Wellness Portal without creating an account or providing your name or email.",
-        )}
-      </p>
+      <h2 className="text-2xl font-bold sm:text-3xl">{t("privacy.title")}</h2>
+      <p className="text-base text-muted-foreground">{t("privacy.intro")}</p>
       <div className="grid gap-4">
         <div>
           <Button
@@ -63,13 +60,9 @@ export function PrivacyChoice({ onChoice }: { onChoice?: () => void }) {
             className="min-h-12 h-auto w-full whitespace-normal rounded-full px-6 py-3"
           >
             <HardDrive />
-            {tx("Save on This Device")}
+            {t("privacy.saveDevice")}
           </Button>
-          <p className="mt-2 text-sm text-muted-foreground">
-            {tx(
-              "Keep only reflections, artwork and completed exercises you explicitly choose to save, in this browser on this device. No account or email required.",
-            )}
-          </p>
+          <p className="mt-2 text-sm text-muted-foreground">{t("privacy.saveDeviceHelp")}</p>
         </div>
         <div>
           <Button
@@ -79,13 +72,9 @@ export function PrivacyChoice({ onChoice }: { onChoice?: () => void }) {
             className="min-h-12 h-auto w-full whitespace-normal rounded-full px-6 py-3"
           >
             <ArrowRight />
-            {tx("Continue Without Saving")}
+            {t("privacy.continueWithout")}
           </Button>
-          <p className="mt-2 text-sm text-muted-foreground">
-            {tx(
-              "Explore every room and activity without saving your personal content. Nothing is saved automatically.",
-            )}
-          </p>
+          <p className="mt-2 text-sm text-muted-foreground">{t("privacy.continueWithoutHelp")}</p>
         </div>
       </div>
       <PrivacyWarning />
@@ -104,10 +93,8 @@ export function PrivacyChoice({ onChoice }: { onChoice?: () => void }) {
           {/* Copy pending founder approval (ADR 0001, D5). */}
           {askExisting === "confirm-delete" ? (
             <>
-              <AlertDialogTitle>{tx("Permanently delete all saved items?")}</AlertDialogTitle>
-              <AlertDialogDescription>
-                {tx("This cannot be undone. Downloaded or shared copies are not removed.")}
-              </AlertDialogDescription>
+              <AlertDialogTitle>{t("privacy.deleteAllTitle")}</AlertDialogTitle>
+              <AlertDialogDescription>{t("privacy.cannotUndo")}</AlertDialogDescription>
               <AlertDialogFooter>
                 <Button
                   variant="outline"
@@ -115,28 +102,24 @@ export function PrivacyChoice({ onChoice }: { onChoice?: () => void }) {
                   className="rounded-full"
                   onClick={() => setAskExisting("ask")}
                 >
-                  {tx("Cancel")}
+                  {t("action.cancel")}
                 </Button>
                 <Button
                   disabled={busy}
                   className="rounded-full"
                   onClick={() => void continueWithoutSaving(true)}
                 >
-                  {tx(busy ? "Deleting…" : "Delete permanently")}
+                  {busy ? t("action.deleting") : t("action.deletePermanently")}
                 </Button>
               </AlertDialogFooter>
             </>
           ) : (
             <>
-              <AlertDialogTitle>{tx("What should happen to your saved items?")}</AlertDialogTitle>
-              <AlertDialogDescription>
-                {tx(
-                  "New items will not be saved. Items you already saved stay in this browser on this device until you delete them.",
-                )}
-              </AlertDialogDescription>
+              <AlertDialogTitle>{t("privacy.keepTitle")}</AlertDialogTitle>
+              <AlertDialogDescription>{t("privacy.keepBody")}</AlertDialogDescription>
               <AlertDialogFooter>
                 <AlertDialogCancel disabled={busy} className="rounded-full">
-                  {tx("Cancel")}
+                  {t("action.cancel")}
                 </AlertDialogCancel>
                 <Button
                   variant="outline"
@@ -144,14 +127,14 @@ export function PrivacyChoice({ onChoice }: { onChoice?: () => void }) {
                   className="rounded-full"
                   onClick={() => setAskExisting("confirm-delete")}
                 >
-                  {tx("Delete them now")}
+                  {t("privacy.deleteNow")}
                 </Button>
                 <Button
                   disabled={busy}
                   className="rounded-full"
                   onClick={() => void continueWithoutSaving(false)}
                 >
-                  {tx("Keep my saved items")}
+                  {t("privacy.keepItems")}
                 </Button>
               </AlertDialogFooter>
             </>

@@ -1,6 +1,7 @@
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import { es } from "@/lib/es";
+import esCatalog from "@/content/i18n/es.json";
 
 // Spanish lookups are keyed by the exact English string, so an edited English
 // line silently loses its translation. Guard the safety-critical screens.
@@ -18,5 +19,21 @@ describe("draft Spanish coverage", () => {
   ])("every %s string has a Spanish entry", (_name, src) => {
     const missing = literals(src).filter((s) => !(s in es));
     expect(missing).toEqual([]);
+  });
+});
+
+// Files moved to typed keys: every t("key") they use needs a draft Spanish entry.
+const keysIn = (src: string) =>
+  [...src.matchAll(/\bt\(\s*"([a-z][A-Za-z0-9.]+)"/g)].map((m) => m[1]!);
+describe("typed-key Spanish coverage", () => {
+  it.each([
+    ["PrivacyChoice", privacy],
+    ["Shell", readFileSync("src/components/portal/Shell.tsx", "utf8")],
+    ["saved-items", readFileSync("src/routes/saved-items.tsx", "utf8")],
+  ])("every %s key has a Spanish entry", (_name, src) => {
+    const catalog = esCatalog as Record<string, string>;
+    const missing = keysIn(src).filter((k) => k !== "notice.translationPending" && !catalog[k]);
+    expect(missing).toEqual([]);
+    expect(keysIn(src).length).toBeGreaterThan(0);
   });
 });

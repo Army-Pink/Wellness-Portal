@@ -2,7 +2,8 @@ import { Link } from "@tanstack/react-router";
 import { useEffect, useState, type ReactNode } from "react";
 import { Menu, X, ArrowLeft, Shield } from "lucide-react";
 import { Logo } from "./Logo";
-import { usePrefs, useT, useTx, type UIKey } from "@/lib/prefs";
+import { usePrefs, useTx } from "@/lib/prefs";
+import type { MessageKey } from "@/lib/i18n";
 import { track } from "@/lib/analytics";
 import type { Status } from "@/data/portal";
 
@@ -44,13 +45,13 @@ export function useQuickExitKey() {
 }
 
 export function QuickExitButton({ className = "" }: { className?: string }) {
-  const t = useT();
+  const { t } = usePrefs();
   return (
     <button
       onClick={quickExit}
       className={`inline-flex min-h-10 items-center shrink-0 whitespace-nowrap rounded-full bg-calm px-5 text-sm font-medium text-foreground shadow-md hover:brightness-110 ${className}`}
     >
-      {t("quickExit")}
+      {t("nav.quickExit")}
     </button>
   );
 }
@@ -77,29 +78,28 @@ export function LangToggle() {
   );
 }
 
-const navItems: { to: string; k: UIKey }[] = [
-  { to: "/", k: "home" },
-  { to: "/saved-items", k: "savedItems" },
-  { to: "/art-room", k: "artRoom" },
-  { to: "/calm-room", k: "calmRoom" },
-  { to: "/recovery-rooms", k: "recoveryRooms" },
-  { to: "/library", k: "library" },
-  { to: "/not-broken", k: "notBroken" },
-  { to: "/opportunities", k: "opportunities" },
-  { to: "/partners", k: "partners" },
-  { to: "/gallery", k: "gallery" },
+const navItems: { to: string; k: MessageKey }[] = [
+  { to: "/", k: "nav.home" },
+  { to: "/saved-items", k: "nav.savedItems" },
+  { to: "/art-room", k: "nav.artRoom" },
+  { to: "/calm-room", k: "nav.calmRoom" },
+  { to: "/recovery-rooms", k: "nav.recoveryRooms" },
+  { to: "/library", k: "nav.library" },
+  { to: "/not-broken", k: "nav.notBroken" },
+  { to: "/opportunities", k: "nav.opportunities" },
+  { to: "/partners", k: "nav.partners" },
+  { to: "/gallery", k: "nav.gallery" },
 ];
 
-const moreItems = [
-  { to: "/journals", label: "Healing Journals" },
-  { to: "/decision-support", label: "Decision Support" },
-  { to: "/toolkit", label: "Survivor Toolkit" },
-  { to: "/partner-sessions", label: "Partner Sessions" },
+const moreItems: { to: string; k: MessageKey }[] = [
+  { to: "/journals", k: "nav.journals" },
+  { to: "/decision-support", k: "nav.decisionSupport" },
+  { to: "/toolkit", k: "nav.toolkit" },
+  { to: "/partner-sessions", k: "nav.partnerSessions" },
 ];
 
 export function Header() {
-  const t = useT();
-  const tx = useTx();
+  const { t } = usePrefs();
   const [open, setOpen] = useState(false);
   const [floating, setFloating] = useState(false);
   useEffect(() => {
@@ -126,7 +126,7 @@ export function Header() {
             <div className="ml-auto flex items-center gap-2">
               <LangToggle />
               <button
-                aria-label={t("menu")}
+                aria-label={t("nav.menu")}
                 aria-expanded={open}
                 onClick={() => setOpen(!open)}
                 className="grid h-10 w-10 place-items-center rounded-full border bg-card lg:hidden"
@@ -155,7 +155,7 @@ export function Header() {
                 </li>
               ))}
               <li className="mt-2 border-t pt-3 text-xs font-bold uppercase tracking-widest text-muted-foreground lg:hidden">
-                {tx("More tools")}
+                {t("nav.moreTools")}
               </li>
               {moreItems.map((n) => (
                 <li key={n.to} className="lg:hidden">
@@ -165,7 +165,7 @@ export function Header() {
                     className="block rounded-full px-3 py-2 text-sm font-medium text-muted-foreground hover:bg-secondary"
                     activeProps={{ className: "bg-secondary text-secondary-foreground" }}
                   >
-                    {tx(n.label)}
+                    {t(n.k)}
                   </Link>
                 </li>
               ))}
@@ -181,7 +181,7 @@ export function Header() {
 }
 
 export function Footer() {
-  const t = useT();
+  const { t } = usePrefs();
   return (
     <footer className="mt-20 border-t">
       <div className="mx-auto grid max-w-6xl gap-6 px-4 py-10 text-sm text-muted-foreground md:grid-cols-3">
@@ -211,7 +211,7 @@ export function Footer() {
         </div>
         <div className="flex flex-col gap-2">
           <Link to="/privacy" className="inline-flex items-center gap-2 font-semibold text-primary">
-            <Shield className="h-4 w-4" /> {t("privacy")} information
+            <Shield className="h-4 w-4" /> {t("nav.privacy")} information
           </Link>
           <p>No sign-up. No profiles. No trackers. Use Quick Exit or press Esc to leave.</p>
         </div>
@@ -241,8 +241,8 @@ export function StatusTag({ status, note }: { status: Status; note?: string }) {
 }
 
 export function TranslationNote() {
-  const t = useT();
-  const msg = t("translationPending");
+  const { t } = usePrefs();
+  const msg = t("notice.translationPending");
   if (!msg) return null;
   return (
     <p className="mb-4 rounded-xl border border-dashed bg-muted px-4 py-2 text-sm text-muted-foreground">
