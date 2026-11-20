@@ -180,10 +180,12 @@ describe("My Saved Items page", () => {
     expect(document.body.textContent).not.toMatch(/note-|boom/);
   });
 
-  it("shows Spanish empty, error and cannot-reopen messages", async () => {
+  it("keeps sensitive My Saved Items copy in English while general UI is Spanish", async () => {
     localStorage.setItem("wp-lang", "es");
     await renderPage(fakeRepo([], true));
-    expect(screen.getByText(/No se pudieron cargar los elementos guardados/)).toBeTruthy();
+    // TR-03: load/error guidance is sensitive and still draft, so English stays.
+    expect(screen.getByText(/Saved items could not be loaded from this browser/)).toBeTruthy();
+    expect(screen.getByText(/Traducción al español en borrador/)).toBeTruthy();
     expect(screen.getByRole("alert").textContent).toMatch(/almacenamiento del navegador/);
     expect(document.body.textContent).not.toMatch(/boom/);
     cleanup();
@@ -194,7 +196,7 @@ describe("My Saved Items page", () => {
       fakeRepo([make("journals", "letting-go", { source: "//evil.example/x" } as never)]),
     );
     fireEvent.click(screen.getByRole("button", { name: /Abrir elemento/ }));
-    expect(screen.getByText("Este elemento ya no se puede reabrir como actividad.")).toBeTruthy();
+    expect(screen.getByText("This item can no longer be reopened as an activity.")).toBeTruthy();
   });
 
   it("shows a content-free error, not the empty state, when loading fails", async () => {
