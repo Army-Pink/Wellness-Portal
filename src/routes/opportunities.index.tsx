@@ -48,7 +48,7 @@ function Opps() {
               setCat(c);
               track("opportunity_category_opened");
             }}
-            className={`min-h-10 rounded-full px-4 text-sm font-semibold ${cat === c ? "bg-coral text-tile-foreground" : "bg-muted text-muted-foreground"}`}
+            className={`min-h-10 rounded-full px-4 text-sm font-semibold ${cat === c ? "bg-coral text-on-tile" : "bg-muted text-muted-foreground"}`}
           >
             {tx(c)}
           </button>
