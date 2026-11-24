@@ -23,6 +23,7 @@ The Portal is free and anonymous: there are no accounts, and nothing a visitor w
 | [Audit and gap analysis](docs/architecture/0001-audit-and-gap-analysis.md) | See how the original prototype was assessed                |
 | [Copy pending approval](docs/decisions/copy-pending-approval.md)           | Check survivor-facing wording awaiting sign-off            |
 | [Deploy and rollback runbook](docs/runbooks/deploy.md)                     | Release to Vercel and undo a bad release                   |
+| [Release checklist](docs/release-checklist.md)                             | Check everything before the 30 November launch             |
 
 **New to the project? Start with the [Developer Onboarding guide](docs/developer-onboarding.md).**
 
