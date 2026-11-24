@@ -128,7 +128,7 @@ The team is volunteers giving about 5 hours a week, so work comes in small ticke
 - Add or update a test for what you changed. A storage or privacy change always needs one.
 - Include a screenshot of any visual change, on mobile and desktop.
 - One approving review is needed. Spend about 1 hour of your 5 reviewing someone else's PR, and answer reviews within 3 days.
-- Never push to `main` or force-push a shared branch.
+- Never push to `main` or force-push a shared branch. GitHub blocks it: `main` needs a pull request, one approving review and a passing `ci` check.
 
 **Can't finish this week?** Push your branch and leave a note in the draft PR: what works, what's left, what you learned. Someone else can pick it up.
 
