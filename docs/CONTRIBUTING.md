@@ -17,7 +17,7 @@ Check "Depends on #N" in the issue before you start: don't begin work whose depe
 
 `ap-NN-short-slug`, using the backlog ticket number, e.g. `ap-07-saved-items-grouping`. For work with no AP number, use `issue-N-short-slug`.
 
-Never push to `main`; never force-push a shared branch.
+Never push to `main`; never force-push a shared branch. GitHub enforces this on `main`: a pull request, one approving review, a passing `ci` check and resolved review conversations are required, and force-push and deletion are blocked. Only repository admins can bypass it.
 
 ## Local checks (same as CI)
 

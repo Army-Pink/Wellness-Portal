@@ -63,8 +63,7 @@ A trauma-informed, anonymous wellness site for survivors of domestic violence, b
 1. **AP-17 (#37):** first Vercel deployment and rollback runbook. **Nothing has been deployed yet.** Choose the Vercel plan: Pro is needed for custom analytics events.
 2. **REL-01a (#38):** release checklist including the founder's 13 QA checks. On the live site, confirm analytics requests go only to the Portal's own domain and carry no content.
 3. **REL-01b (#39):** stabilize and launch on 30 November.
-4. **Optional:** AP-14a (#14), TR-02b (#34).
-5. Enable branch protection on `main` (#11; repo admin only).
+4. **Optional:** TR-02b (#34).
 
 ## After launch
 

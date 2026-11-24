@@ -116,5 +116,4 @@ Practise once on the first real deployment, before launch, so the first real rol
 ## Known gaps
 
 - Nothing has been deployed yet, so no step here has been run against Vercel. The rehearsal above is what proves it.
-- Branch protection on `main` (#11) needs a repository admin.
 - The custom domain is not yet decided.

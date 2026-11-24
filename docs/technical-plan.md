@@ -303,7 +303,7 @@ Phases run as parallel workstreams rather than in sequence. Week 5 holds only st
 
 ## 9. Work backlog
 
-Release scope is 55 developer hours in tickets of 5 hours or less, about 13 hours a week from 26 October. AP-01 to AP-06, AP-08 and AP-11 (CI) are done. New tickets from the founder's brief are marked **new**. TR-06 is review work for the content team and is not counted in developer hours.
+Release scope is 55 developer hours in tickets of 5 hours or less, about 13 hours a week from 26 October. AP-01 to AP-06, AP-08 and AP-11 (CI and branch protection) are done. New tickets from the founder's brief are marked **new**. TR-06 is review work for the content team and is not counted in developer hours.
 
 | Week | ID             | Ticket                                                  | Workstream    | Hours | Depends on | Acceptance criteria                                                                                                               |
 | ---- | -------------- | ------------------------------------------------------- | ------------- | ----- | ---------- | --------------------------------------------------------------------------------------------------------------------------------- |
