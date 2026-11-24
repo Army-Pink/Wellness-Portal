@@ -58,9 +58,7 @@ export function LangToggle() {
           aria-pressed={lang === l}
           disabled={l === "es" && !SPANISH_ENABLED}
           aria-label={
-            l === "es" && !SPANISH_ENABLED
-              ? "Español: próximamente (Spanish coming soon)"
-              : undefined
+            l === "es" && !SPANISH_ENABLED ? "ES · pronto: Spanish coming soon" : undefined
           }
           title={l === "es" && !SPANISH_ENABLED ? "Español: próximamente" : undefined}
           onClick={() => setLang(l)}
