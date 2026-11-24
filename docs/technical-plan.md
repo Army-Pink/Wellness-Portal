@@ -318,7 +318,7 @@ Release scope is 55 developer hours in tickets of 5 hours or less, about 13 hour
 | W3   | TR-02b         | Move room and library strings to keys                   | Spanish       | 6     | TR-01      | Three PRs, one per area                                                                                                           |
 | W3   | TR-03          | Review status and sensitive fallback                    | Spanish       | 4     | TR-01      | Sensitive strings show English plus a notice until approved                                                                       |
 | W3   | AP-10a         | Accessibility checks with axe                           | QA & security | 3     | None       | No serious or critical axe findings on any route                                                                                  |
-| W4   | AP-14a         | Recovery Rooms on shared components                     | Rooms         | 4     | None       | Room pages use the shared card and SaveActions                                                                                    |
+| W4   | AP-14a         | Recovery Rooms save through the shared save control     | Rooms         | 4     | None       | At least 2 rooms save through SaveActions with the correct kind; browser test covers it (done, PR #62)                            |
 | W4   | AP-17          | Vercel deployment and rollback runbook                  | QA & security | 4     | AP-11      | Preview deploy verified; rollback rehearsed once                                                                                  |
 | W4   | REL-01a        | Release checklist, including the founder's QA checklist | All           | 3     | All above  | All 13 founder checks listed with how each is verified                                                                            |
 | W5   | REL-01b        | Stabilization, manual Spanish check and launch          | All           | 5     | REL-01a    | Founder acceptance; release deployed 30 Nov                                                                                       |
@@ -385,7 +385,7 @@ This is the backlog as plain to-dos. Tick each box when its pull request is merg
 
 **W4 · 16–22 Nov**
 
-- [ ] **AP-14a** Rebuild the Recovery Room pages on the shared card and Save button (4 h)
+- [x] **AP-14a** Recovery Rooms save through the shared Save button with the correct kind; browser test added (4 h)
 - [ ] **AP-17** Write the Vercel deploy and rollback steps, and rehearse a rollback once (4 h)
 - [ ] **REL-01a** Write the release checklist, including all 13 checks from the founder's brief, and agree it with the founder (3 h)
 
