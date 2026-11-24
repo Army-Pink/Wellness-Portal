@@ -396,7 +396,7 @@ This is the backlog as plain to-dos. Tick each box when its pull request is merg
 **Founder and leadership, before launch**
 
 - [x] Decide D4: Esc works everywhere (decided 24 Nov)
-- [ ] Decide D7: service for gallery sharing (by 5 Dec)
+- [x] Decide D7: service for gallery sharing (agreed 24 Nov; see `docs/decisions/d7-gallery-sharing-approval.md`)
 - [ ] Name a gallery moderator (by 5 Dec)
 - [x] Remove the simulated PIN lock for launch (decided 24 Nov)
 - [x] Approve the saving and privacy wording (24 Nov)
