@@ -54,6 +54,7 @@ The founder's final FAQ wording is in [`founder-brief-2026-10-26.md`](founder-br
 - [ ] **FAQ #5 (artwork sharing; interim wording, pending, decision #24).** Gallery sharing is not built yet (decision D7). Proposed interim answer: "Your artwork stays private on this device. Sharing to the Anonymous Survivor Art Gallery isn't available yet; when it is, you'll always choose first and see what will be shared."
 - [ ] **FAQ #7.** Must match real behavior: no analytics are switched on and nothing leaves the device today.
 - [ ] **Simulated PIN lock** in Journals and Toolkit. Recommended: remove it for launch (the brief asks for prototype-only features to go).
+
 ## AP-07b — My Saved Items: error messages (draft Spanish)
 
 Source: `src/lib/es.ts`. Short interface strings; English is the existing wording from the app. Needs native-speaker review.
@@ -63,6 +64,7 @@ Source: `src/lib/es.ts`. Short interface strings; English is the existing wordin
 | [ ] | Browser storage is unavailable or full. Nothing new was saved. You can continue using every Portal activity without saving. | El almacenamiento del navegador no está disponible o está lleno. No se guardó nada nuevo. Puedes seguir usando todas las actividades del Portal sin guardar. |
 | [ ] | Could not delete saved items. They may still be in this browser. Please try again.                                          | No se pudieron eliminar los elementos guardados. Es posible que sigan en este navegador. Inténtalo de nuevo.                                                 |
 | [ ] | Could not export your collection. Please try again.                                                                         | No se pudo exportar tu colección. Inténtalo de nuevo.                                                                                                        |
+
 - [x] **Saving labels.** Renamed to the brief's terms in AP-21 (see the AP-21 section below).
 
 ## AP-21 — Saving terms and prototype statements

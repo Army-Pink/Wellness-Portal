@@ -1,4 +1,4 @@
-import { act, render, screen } from "@testing-library/react";
+import { act, fireEvent, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it } from "vitest";
 import en from "@/content/i18n/en.json";
 import es from "@/content/i18n/es.json";
@@ -83,7 +83,7 @@ describe("language setting", () => {
 
   it("makes <html lang> and t() follow the toggle", () => {
     render(
-      <PrefsProvider>
+      <PrefsProvider allowSpanish>
         <Probe />
       </PrefsProvider>,
     );
@@ -97,7 +97,7 @@ describe("language setting", () => {
   it("restores a saved language and ignores invalid values", () => {
     localStorage.setItem("wp-lang", "es");
     const { unmount } = render(
-      <PrefsProvider>
+      <PrefsProvider allowSpanish>
         <Probe />
       </PrefsProvider>,
     );
@@ -105,10 +105,23 @@ describe("language setting", () => {
     unmount();
     localStorage.setItem("wp-lang", "xx");
     render(
+      <PrefsProvider allowSpanish>
+        <Probe />
+      </PrefsProvider>,
+    );
+    expect(document.documentElement.lang).toBe("en");
+  });
+
+  it("keeps Spanish as Coming Soon for visitors until it is reviewed", () => {
+    localStorage.setItem("wp-lang", "es");
+    render(
       <PrefsProvider>
         <Probe />
       </PrefsProvider>,
     );
+    // A stored "es" is ignored while Spanish is not enabled.
+    expect(document.documentElement.lang).toBe("en");
+    fireEvent.click(screen.getByTestId("b"));
     expect(document.documentElement.lang).toBe("en");
   });
 });

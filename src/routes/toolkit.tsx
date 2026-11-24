@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { BriefcaseMedical, Map, Lock, Clock, ArrowLeft } from "lucide-react";
 import { PageShell, StatusTag } from "@/components/portal/Shell";
-import { RowCard, SimulatedBadge, SimulatedPin } from "@/components/portal/Simulated";
+import { RowCard } from "@/components/portal/Simulated";
 import { SaveActions } from "@/components/portal/SaveActions";
 import { useTx } from "@/lib/prefs";
 
@@ -77,18 +77,9 @@ function Toolkit() {
 
   if (view === "planner")
     return (
-      <PageShell
-        accent="coral"
-        title="Hidden Safety Planner"
-        tags={
-          <>
-            <SimulatedBadge what="PIN lock" />
-            <SimulatedBadge what="works offline" />
-          </>
-        }
-      >
+      <PageShell accent="coral" title="Hidden Safety Planner">
         {back}
-        <SimulatedPin label="Create a PIN for your planner">
+        <>
           <div className="grid max-w-2xl gap-4">
             {planner.map((p, i) => (
               <label key={p} className="block rounded-2xl border bg-card p-4">
@@ -103,7 +94,6 @@ function Toolkit() {
                 />
               </label>
             ))}
-            <SimulatedBadge what="PIN & encryption — not real protection" />
             <SaveActions
               item={{
                 kind: "reflection",
@@ -118,7 +108,7 @@ function Toolkit() {
               }}
             />
           </div>
-        </SimulatedPin>
+        </>
       </PageShell>
     );
 
@@ -148,10 +138,9 @@ function Toolkit() {
           icon={Lock}
           color="bg-coral"
           title="Hidden Safety Planner"
-          sub={tx("Optional device saving; PIN & offline features are simulated")}
+          sub={tx("Write your plan; save it on this device only if you choose")}
           onClick={() => setView("planner")}
           highlight
-          right={<SimulatedBadge what="PIN & offline" />}
         />
         <RowCard
           icon={Clock}

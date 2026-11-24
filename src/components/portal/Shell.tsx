@@ -2,12 +2,12 @@ import { Link } from "@tanstack/react-router";
 import { useEffect, useState, type ReactNode } from "react";
 import { Menu, X, ArrowLeft, Shield } from "lucide-react";
 import { Logo } from "./Logo";
-import { usePrefs, useTx } from "@/lib/prefs";
+import { SPANISH_ENABLED, usePrefs, useTx } from "@/lib/prefs";
 import type { MessageKey } from "@/lib/i18n";
 import { track } from "@/lib/analytics";
 import type { Status } from "@/data/portal";
 
-// Neutral destination — production destination requires approval.
+// Neutral destination, approved by the founder on 24 Nov 2026.
 export const QUICK_EXIT_URL = "https://www.weather.com";
 
 export function quickExit() {
@@ -16,31 +16,19 @@ export function quickExit() {
 }
 
 /**
- * D4: Esc leaves the Portal, except when it would interrupt the visitor:
- * an open dialog/menu (Esc closes it instead) or a focused text field or
- * canvas (stray presses must not lose unsaved writing or drawing).
- * The Quick Exit button always works.
+ * Esc is a safety shortcut: it leaves the Portal from anywhere, including while
+ * typing, drawing or with a dialog open (founder decision, 24 Nov 2026,
+ * replacing D4). It listens in the capture phase so no component can swallow it.
  */
-export function shouldQuickExitOnKey(e: KeyboardEvent, doc: Document = document): boolean {
-  if (e.key !== "Escape" || e.defaultPrevented) return false;
-  if (doc.querySelector('[role="dialog"], [role="alertdialog"], [role="menu"], [role="listbox"]'))
-    return false;
-  const el = doc.activeElement;
-  if (!(el instanceof HTMLElement)) return true;
-  return !(
-    el.isContentEditable ||
-    el instanceof HTMLTextAreaElement ||
-    el instanceof HTMLSelectElement ||
-    el instanceof HTMLCanvasElement ||
-    (el instanceof HTMLInputElement && !["button", "checkbox", "radio", "submit"].includes(el.type))
-  );
+export function shouldQuickExitOnKey(e: KeyboardEvent): boolean {
+  return e.key === "Escape";
 }
 
 export function useQuickExitKey() {
   useEffect(() => {
     const h = (e: KeyboardEvent) => shouldQuickExitOnKey(e) && quickExit();
-    window.addEventListener("keydown", h);
-    return () => window.removeEventListener("keydown", h);
+    window.addEventListener("keydown", h, { capture: true });
+    return () => window.removeEventListener("keydown", h, { capture: true });
   }, []);
 }
 
@@ -68,10 +56,17 @@ export function LangToggle() {
         <button
           key={l}
           aria-pressed={lang === l}
+          disabled={l === "es" && !SPANISH_ENABLED}
+          aria-label={
+            l === "es" && !SPANISH_ENABLED
+              ? "Español: próximamente (Spanish coming soon)"
+              : undefined
+          }
+          title={l === "es" && !SPANISH_ENABLED ? "Español: próximamente" : undefined}
           onClick={() => setLang(l)}
-          className={`min-h-8 min-w-9 rounded-full px-2.5 transition ${lang === l ? "bg-foreground/70 text-background" : "text-foreground/80 hover:text-foreground"}`}
+          className={`min-h-8 min-w-9 rounded-full px-2.5 transition ${lang === l ? "bg-foreground/70 text-background" : "text-foreground/80 hover:text-foreground"} disabled:cursor-not-allowed disabled:opacity-50`}
         >
-          {l.toUpperCase()}
+          {l === "es" && !SPANISH_ENABLED ? "ES · pronto" : l.toUpperCase()}
         </button>
       ))}
     </div>

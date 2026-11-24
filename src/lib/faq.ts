@@ -1,7 +1,8 @@
 // Home page FAQ. Wording, numbering and order come from the founder's brief of
 // 26 October 2026 (docs/decisions/founder-brief-2026-10-26.md). Do not reword.
-// #3 (Esc, decision D4) and #5 (gallery sharing, D7) are pending approval; see
-// docs/decisions/copy-pending-approval.md. Answers stay untranslated until approved.
+// #3 approved 24 Nov with Esc working globally. #5 keeps the interim wording,
+// which the founder approved as accurate for today, until gallery sharing (D7)
+// is built and verified. #9's "armypink.org" is rendered as a link.
 export const faqs = [
   {
     q: "Do I need an account to use the Portal?",

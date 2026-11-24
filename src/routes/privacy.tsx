@@ -30,6 +30,7 @@ const promises = [
   "No session recording or invasive heatmaps",
   "No precise location tracking",
   "No identifying information collected for analytics",
+  "No cookies or persistent identifiers",
 ];
 
 function Privacy() {
@@ -63,12 +64,9 @@ function Privacy() {
           using a private browsing window.
         </p>
         <p className="mt-2">
-          The Esc key does not leave while you are typing, drawing or have a window open, so a stray
-          key press cannot lose your work. The Quick Exit button always works.
+          Esc works everywhere in the Portal, even while you are typing, drawing or have a window
+          open. Anything you have not saved is left behind when you exit.
         </p>
-        <div className="mt-3">
-          <StatusTag status="approval" note="destination & production behavior" />
-        </div>
       </section>
       <section className="mt-6 rounded-3xl border p-6">
         <h2 className="text-lg font-bold">Saving on this device</h2>
@@ -82,16 +80,21 @@ function Privacy() {
           delete them. Download My Saved Items gives you a ZIP of your saved artwork images,
           readable text files and a simple index. It is built in your browser and not uploaded.
         </p>
-        <div className="mt-3">
-          <StatusTag status="approval" note="saving wording" />
-        </div>
       </section>
       <section className="mt-6 rounded-3xl border p-6">
         <h2 className="text-lg font-bold">Usage measurement</h2>
         <p className="mt-2 text-muted-foreground">
-          In the future, the Portal may count anonymous actions (for example, "a page was opened")
-          to improve it — never the content of what you write, draw or search, and never who you
-          are. Nothing is measured today.
+          To improve the Portal, we count aggregate, anonymous usage with Vercel Web Analytics:
+          visits, which rooms and resources are opened, language choice, how often items are saved
+          or deleted, navigation, Quick Exit use and technical errors. These are totals, not a
+          record of what any one person did.
+        </p>
+        <p className="mt-2 text-muted-foreground">
+          We never collect your name, contact details, client, ride or case information, journal
+          entries, artwork, anything you type, searches or your precise location. There are no
+          cookies, persistent identifiers, advertising trackers, cross-site tracking, session
+          recordings or heatmaps. The measurement records the page address (without anything after a
+          "?" or "#"), the type of device, browser and operating system, and an approximate region.
         </p>
       </section>
     </PageShell>

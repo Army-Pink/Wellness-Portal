@@ -72,7 +72,7 @@ async function renderPage(repo: SavedItemsRepository) {
     history: createMemoryHistory({ initialEntries: ["/saved-items"] }),
   });
   render(
-    <PrefsProvider>
+    <PrefsProvider allowSpanish>
       <SavingProvider repository={repo}>
         <RouterProvider router={router} />
       </SavingProvider>

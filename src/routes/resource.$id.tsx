@@ -31,8 +31,8 @@ export const Route = createFileRoute("/resource/$id")({
 function Resource() {
   const { r, cat } = Route.useLoaderData();
   useEffect(() => {
-    track("library_resource_opened");
-  }, []);
+    track("library_resource_opened", { category: cat.slug });
+  }, [cat.slug]);
   return (
     <PageShell
       title={r.title}

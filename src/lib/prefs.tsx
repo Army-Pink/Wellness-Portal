@@ -26,9 +26,23 @@ type Prefs = {
   setReduceMotion: (v: boolean) => void;
 };
 
+/**
+ * Spanish stays "Coming Soon" until a qualified, fluent (ideally native) Spanish
+ * speaker familiar with survivor-support terms has reviewed it (founder, 24 Nov
+ * 2026). Flip to true only after that review (TR-06).
+ */
+export const SPANISH_ENABLED = false;
+
 const Ctx = createContext<Prefs | null>(null);
 
-export function PrefsProvider({ children }: { children: ReactNode }) {
+export function PrefsProvider({
+  children,
+  allowSpanish = SPANISH_ENABLED,
+}: {
+  children: ReactNode;
+  /** Tests only: exercise the Spanish code paths before Spanish is enabled for visitors. */
+  allowSpanish?: boolean;
+}) {
   const [lang, setLangS] = useState<Lang>("en");
   const [theme, setThemeS] = useState<Theme>("dark");
   const [largeText, setLargeText] = useState(false);
@@ -36,8 +50,8 @@ export function PrefsProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     const l = localStorage.getItem("wp-lang");
-    if (isLang(l)) setLangS(l);
-  }, []);
+    if (isLang(l) && (l === "en" || allowSpanish)) setLangS(l);
+  }, [allowSpanish]);
 
   useEffect(() => {
     const el = document.documentElement;
@@ -48,6 +62,7 @@ export function PrefsProvider({ children }: { children: ReactNode }) {
   }, [theme, largeText, reduceMotion, lang]);
 
   const setLang = (l: Lang) => {
+    if (l === "es" && !allowSpanish) return;
     setLangS(l);
     localStorage.setItem("wp-lang", l);
     track(l === "en" ? "language_english_selected" : "language_spanish_selected");

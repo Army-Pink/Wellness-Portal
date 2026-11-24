@@ -37,8 +37,8 @@ function Category() {
   const tx = useTx();
   const [preview, setPreview] = useState<Resource | null>(null);
   useEffect(() => {
-    track("library_category_opened");
-  }, []);
+    track("library_category_opened", { category: c.slug });
+  }, [c.slug]);
   return (
     <PageShell
       title={c.name}

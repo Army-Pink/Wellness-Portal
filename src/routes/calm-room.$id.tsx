@@ -39,8 +39,8 @@ function Player() {
   const [cc, setCc] = useState(true);
   const timer = useRef<number | undefined>(undefined);
   useEffect(() => {
-    track("calm_media_opened");
-  }, []);
+    track("calm_media_opened", { media: m.id });
+  }, [m.id]);
   useEffect(() => {
     if (!playing) return;
     timer.current = window.setInterval(() => setPos((p) => (p >= 100 ? 100 : p + 0.5)), 200);
