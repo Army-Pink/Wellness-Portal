@@ -122,8 +122,9 @@
   --popover-foreground: oklch(0.93 0.008 10);
   --primary: #ea79a9;
   --primary-foreground: #1b1819;
-  --secondary: #80657e;
-  --secondary-foreground: oklch(0.9 0.06 355);
+  /* Darker secondary so small text on secondary surfaces meets contrast. */
+  --secondary: #5a4459;
+  --secondary-foreground: #f6eef5;
   --muted: oklch(0.27 0.02 340);
   --muted-foreground: oklch(0.76 0.02 340);
   --accent: oklch(0.36 0.06 350);
@@ -133,14 +134,19 @@
   --input: oklch(1 0 0 / 15%);
   --ring: #ea79a9;
   --calm: #686565;
+  --calm-foreground: #f4f0f0;
   --teal: #5ebba3;
   --coral: #f3954f;
-  --lavender: #7777b7;
-  --plum: #a4679c;
+  /* Mid accents darkened so white tile labels meet WCAG AA. */
+  --lavender: #4f4f96;
+  --plum: #6e3f68;
   --sun: #fdd36a;
-  --slate: #6a7d9a;
+  --slate: #455872;
   --mauve: #80657e;
   --grey: #686565;
+  /* Charcoal on bright tiles (coral / primary / teal); white on darkened slate/plum/lavender. */
+  --on-tile: #1b1819;
+  --tile-foreground: #ffffff;
   --gradient-sunset: linear-gradient(180deg, #f3954f, #ea79a9 55%, #a4679c);
   --intro-a: oklch(0.36 0.07 350);
   --intro-b: oklch(0.26 0.04 345);

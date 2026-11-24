@@ -55,7 +55,7 @@ function Privacy() {
           </li>
         ))}
       </ul>
-      <section className="mt-8 rounded-3xl bg-secondary p-6 text-secondary-foreground">
+      <section className="mt-8 rounded-3xl border bg-card p-6">
         <h2 className="text-lg font-bold">About Quick Exit</h2>
         <p className="mt-2">
           Quick Exit (or the Esc key) takes you to a neutral website right away. It does not erase

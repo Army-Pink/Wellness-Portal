@@ -68,7 +68,7 @@ function Library() {
             zIndex: 10 - abs,
             opacity: hidden ? 0 : 1,
           } as React.CSSProperties;
-          const cls = `absolute left-1/2 top-1/2 -mt-40 flex h-80 w-56 flex-col items-center justify-center gap-6 rounded-3xl border-2 border-primary/70 bg-card/70 p-5 text-center shadow-xl backdrop-blur transition-all duration-500 sm:-mt-44 sm:h-[22rem] sm:w-60 ${hidden ? "pointer-events-none" : ""} ${abs === 0 ? "border-primary bg-card/90" : "hover:border-primary"}`;
+          const cls = `absolute left-1/2 top-1/2 -mt-40 flex h-80 w-56 flex-col items-center justify-center gap-6 rounded-3xl border-2 border-primary/70 bg-card p-5 text-center shadow-xl transition-all duration-500 sm:-mt-44 sm:h-[22rem] sm:w-60 ${hidden ? "pointer-events-none" : ""} ${abs === 0 ? "border-primary" : "hover:border-primary"}`;
           const inner = (
             <>
               <span
