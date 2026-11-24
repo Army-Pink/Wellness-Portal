@@ -323,7 +323,7 @@ Release scope is 55 developer hours in tickets of 5 hours or less, about 13 hour
 | W4   | REL-01a        | Release checklist, including the founder's QA checklist | All           | 3     | All above  | All 13 founder checks listed with how each is verified                                                                            |
 | W5   | REL-01b        | Stabilization, manual Spanish check and launch          | All           | 5     | REL-01a    | Founder acceptance; release deployed 30 Nov                                                                                       |
 
-**Deferred to Release 1.1 (about March 2027).** These 52 hours are work the launch can do without, mostly behind-the-scenes tidying that visitors would not notice. AP-12 (analytics) is no longer here: it was built on 24 November. They follow the Art Room and gallery work.
+**Deferred to Release 1.1 (about March 2027).** The founder approved this deferral on 24 November (`docs/decisions/release-1-1-deferral-approval.md`). These 52 hours are work the launch can do without, mostly behind-the-scenes tidying that visitors would not notice. AP-12 (analytics) is no longer here: it was built on 24 November. They follow the Art Room and gallery work.
 
 | ID       | Ticket                                                                             | Hours | Why it can wait                                                             |
 | -------- | ---------------------------------------------------------------------------------- | ----- | --------------------------------------------------------------------------- |
