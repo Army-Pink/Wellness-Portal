@@ -62,17 +62,21 @@ test.describe("Quick Exit", () => {
     await expect(page).toHaveTitle("Neutral");
   });
 
-  test("Esc exits from the page but not while typing (D4)", async ({ page }) => {
+  // Founder, 24 Nov 2026: Esc works globally, even while typing.
+  test("Esc exits from the page", async ({ page }) => {
     await choose(page, "Continue Without Saving");
-    await page.goto("/decision-support");
-    const field = page.locator("textarea").first();
-    if (await field.count()) {
-      await field.focus();
-      await page.keyboard.press("Escape");
-      await expect(page).toHaveURL(/decision-support/);
-      await field.blur();
-    }
+    await page.goto("/privacy");
     await page.locator("h1").click();
+    await page.keyboard.press("Escape");
+    await expect(page).toHaveURL(/weather\.com/);
+  });
+
+  test("Esc exits even while typing in a text field", async ({ page }) => {
+    await choose(page, "Continue Without Saving");
+    await page.goto("/toolkit");
+    await page.getByText("Hidden Safety Planner").click();
+    const field = page.locator("textarea").first();
+    await field.fill("draft");
     await page.keyboard.press("Escape");
     await expect(page).toHaveURL(/weather\.com/);
   });

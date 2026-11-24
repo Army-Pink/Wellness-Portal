@@ -1,7 +1,8 @@
 // Home page FAQ. Wording, numbering and order come from the founder's brief of
 // 26 October 2026 (docs/decisions/founder-brief-2026-10-26.md). Do not reword.
-// #3 (Esc, decision D4) and #5 (gallery sharing, D7) are pending approval; see
-// docs/decisions/copy-pending-approval.md. Answers stay untranslated until approved.
+// #3 approved 24 Nov with Esc working globally. #5 keeps the interim wording,
+// which the founder approved as accurate for today, until gallery sharing (D7)
+// is built and verified. #9's "armypink.org" is rendered as a link.
 export const faqs = [
   {
     q: "Do I need an account to use the Portal?",
@@ -30,7 +31,7 @@ export const faqs = [
   },
   {
     q: "Can anyone see what I do in the Portal?",
-    a: "The Portal is designed to let you explore without creating an account or profile. What remains on your device, what is shared, and what information may be collected depend on the features you use. Choosing to save something on your device is different from choosing to share artwork with the Anonymous Survivor Art Gallery.",
+    a: "The Portal is designed to let you explore without creating an account or profile. What remains on your device, what is shared, and what information may be collected depend on the features you use. Choosing to save something on your device is different from choosing to share artwork with the Anonymous Survivor Art Gallery. We count aggregate, anonymous usage, such as which rooms are visited, to improve the Portal. We never collect who you are or what you write or create.",
   },
   {
     q: "Does the Portal provide crisis support or professional services?",

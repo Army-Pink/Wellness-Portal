@@ -1,21 +1,27 @@
 # Army Pink Wellness Portal — Technical Plan
 
-_Last updated 26 October 2026. Developers: start with the [Developer Onboarding guide](developer-onboarding.md)._
+_Last updated 24 November 2026. Developers: start with the [Developer Onboarding guide](developer-onboarding.md)._
 
 ## Executive summary
 
 The Wellness Portal is a free, anonymous website that Army Pink is building for survivors of domestic violence. It releases on **30 November 2026**. Visitors can calm down, reflect, learn, find opportunities and create art without creating an account. Anything they choose to save stays on their own device.
 
-- **Where we are.** The foundation is complete and tested, and 92 automated tests pass. The site builds and runs, and the privacy choice and device-only saving work end to end. Most content is still placeholder text.
-- **How it is built.** The Portal is a static website with no backend server. That one decision removes the biggest privacy risk, a central store of survivors' data, and keeps the project cheap and simple for a volunteer team to run. Section 4 explains why.
-- **What happens next.** Team work starts **this week, Monday 26 October**. Five weeks remain before the 30 November launch, with Thanksgiving week at half capacity.
-- **What the founder's brief adds.** The founder's final brief of 26 October requires a 9-question FAQ, an optional About Army Pink link, consistent privacy wording and readable text files in the download. That is about 11 hours of new work, scheduled before launch. It also asks for sharing to an Anonymous Survivor Art Gallery, which needs a server; see decision D7.
-- **What changed in scope.** The team is 4 volunteer developers giving about 5 hours a week, roughly 13 focused hours in total. That covers about 55 hours before launch. To make room, behind-the-scenes refactoring (moving content to JSON, shared components) and other polish move to **Release 1.1, targeted for 19 February 2027**. Visitors won't notice these changes. The full Art Room stays targeted for 15 January 2027, and the basic canvas ships at launch.
-- **What we need from leadership.**
-  - a decision on gallery sharing (D7) and on the Esc wording (D4)
-  - agreement to launch on 30 November with the deferred items listed in section 9
-  - an owner for real content and for Spanish review
-  - approval of the wording listed in section 11
+- **Where we are (24 November).** The founder's FAQ, saving terms, About Army Pink link, ZIP text files, typed translations and My Saved Items states are merged to `main`. Her decisions of 24 November are in review as PR #59. **Nothing has been deployed to Vercel yet.**
+- **Launch on 30 November, in English.** Spanish is shown as "Coming Soon" until a qualified, fluent Spanish speaker has reviewed it.
+- **What still has to happen before launch:**
+  - merge PR #59
+  - first Vercel deployment and rollback runbook (AP-17)
+  - release checklist with the founder's QA checks (REL-01a)
+  - final check and launch (REL-01b)
+- **Analytics.** Aggregate Vercel Web Analytics is built to the founder's specification and switches on with the first deployment. No cookies, no persistent identifiers, no content.
+- **Gallery sharing.** The founder wants the full Anonymous Survivor Art Gallery. It needs a small server-side service and moderation, about 43 developer hours. It is planned with the full Art Room for **29 January 2027**, if the founder approves the service (D7) by 5 December and names a moderator.
+- **Release 1.1** (behind-the-scenes tidying) moves to about March 2027.
+- **How it is built.** The Portal is a static website with no backend server, which removes the biggest privacy risk: a central store of survivors' data. Section 4 explains why. Gallery sharing will be the only exception, and only for artwork a visitor chooses to share.
+- **What we need from leadership:**
+  - D7 decision by 5 December
+  - a named gallery moderator
+  - a Spanish reviewer
+  - a content owner
 
 ## About this document
 
@@ -72,6 +78,32 @@ The founder's _Final Developer Brief: FAQ, Privacy, Safety & Army Pink Website C
 - **Simulated PIN lock.** The Journals and Toolkit show a pretend PIN lock, labelled "Simulated".
   - _Recommended:_ remove it for launch, since the brief asks for prototype-only features to go.
 
+## Founder's response of 24 November: decisions
+
+The founder answered every open question. Her rule stays the same: safety, privacy and transparency are non-negotiable, and every sentence a visitor reads must match what the Portal really does. The full record, the analytics check and the gallery estimate are in `docs/decisions/founder-response-2026-11-24.md`.
+
+| Topic                       | Founder's decision                                                                           | Status                                                      |
+| --------------------------- | -------------------------------------------------------------------------------------------- | ----------------------------------------------------------- |
+| Esc key (D4)                | Esc activates Quick Exit everywhere, even while typing, drawing or with a pop-up open        | Built in PR #59                                             |
+| Gallery sharing (D7)        | Build the full sharing experience; don't treat it as a future feature                        | Estimated: about 43 h, target 29 Jan 2027 with the Art Room |
+| Analytics                   | Aggregate Vercel Web Analytics and custom events, per the original specification             | Built in PR #59; active once deployed                       |
+| armypink.org                | Make it a clickable link                                                                     | Built in PR #59                                             |
+| Emergency box under the FAQ | Remove it; the hotline is already in FAQ #4 and #8                                           | Built in PR #59                                             |
+| Saving buttons and wording  | Continue Without Saving, Turn Saving Off and the saving text approved                        | Done (AP-21)                                                |
+| Privacy page                | "Nothing is measured today" replaced with an accurate description of aggregate analytics     | Built in PR #59                                             |
+| Simulated PIN screen        | Remove for launch; real PIN protection may come later                                        | Built in PR #59                                             |
+| Spanish                     | Launch in English; Spanish only after review by a qualified, fluent (ideally native) speaker | Built in PR #59 ("ES · pronto")                             |
+| Quick Exit destination      | Keep weather.com                                                                             | No change                                                   |
+| Turning saving off          | Make clear it does not delete saved items                                                    | In place                                                    |
+
+**What analytics collects.** Page views and a fixed list of events: rooms and resources opened, language choice, saves and deletes, Quick Exit use and technical errors.
+
+- **Never collected:** names, contact details, case information, journal entries, artwork, free text, searches or precise location.
+- **How it's enforced:** an allowlist in the code drops anything else, and query strings are stripped from page addresses.
+- **To confirm:**
+  - custom events need the Vercel Pro plan
+  - Vercel's documentation does not say whether IP addresses are stored
+
 ## 1. Where the project stands
 
 The Portal's foundation was finished and tested on 18 October 2026, about two weeks ahead of the original plan. The first version was a clickable prototype made with Lovable, an AI website builder; the code no longer depends on it.
@@ -116,7 +148,7 @@ The Portal is a static React app with no backend: Vercel serves files, and every
 
 ![Architecture as built: static site, browser-only storage](images/architecture.png)
 
-Pages save only through `SaveActions`. The repository validates every record before writing, and the analytics adapter stays a no-op until the event list is approved.
+Pages save only through `SaveActions`. The repository validates every record before writing, and analytics sends only allowlisted, aggregate events, with no content.
 
 | Layer        | Technology                                                      | Location                                |
 | ------------ | --------------------------------------------------------------- | --------------------------------------- |
@@ -150,11 +182,11 @@ The Portal has no server of its own and no database. Vercel delivers the same fi
 
 **The trade-offs.**
 
-| Trade-off                                     | What it means for visitors and staff                                                   | How the plan handles it                                                            |
-| --------------------------------------------- | -------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- |
-| Saved items live in one browser on one device | They don't follow the visitor to another device, and clearing browser data erases them | The privacy screen says this plainly; visitors can download a ZIP copy at any time |
-| Content updates need a code change            | Non-technical staff can't edit pages directly                                          | Content is reviewed through GitHub; a content management system can be added later |
-| Analytics are limited                         | Only anonymous, approved events can be counted                                         | Vercel Web Analytics with an allowlist of event names (AP-12), off until approved  |
+| Trade-off                                     | What it means for visitors and staff                                                   | How the plan handles it                                                                              |
+| --------------------------------------------- | -------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
+| Saved items live in one browser on one device | They don't follow the visitor to another device, and clearing browser data erases them | The privacy screen says this plainly; visitors can download a ZIP copy at any time                   |
+| Content updates need a code change            | Non-technical staff can't edit pages directly                                          | Content is reviewed through GitHub; a content management system can be added later                   |
+| Analytics are limited                         | Only anonymous, approved events can be counted                                         | Vercel Web Analytics with an allowlist of events, approved and built (24 Nov); aggregate counts only |
 
 **When a backend would be added.** Only if leadership approves a feature that truly needs one, and only after a privacy review. Examples:
 
@@ -168,20 +200,20 @@ The plan then favours a small managed service, such as Supabase or Neon behind V
 
 Six decisions were taken on 18 October and are implemented. Changing one needs a new decision record in `docs/decisions/`.
 
-| ID  | Decision                                                                                               | Why                                                                                             | Still open                                                                      |
-| --- | ------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- |
-| D1  | Static SPA on Vercel; no server runtime                                                                | No feature needs a server; the simplest security policy; no beta server framework in production | None                                                                            |
-| D2  | Detach from Lovable now                                                                                | Volunteers need a normal Vite setup they can read and debug                                     | Lovable can still be used for throwaway stakeholder mock-ups, outside this repo |
-| D3  | Export as ZIP: readable HTML, JSON manifest, images                                                    | Readable on any device and still machine-readable for a future re-import                        | Check how phones handle the ZIP during QA                                       |
-| D4  | Esc exits except in dialogs, text fields and the canvas                                                | A stray key press must not lose a survivor's writing                                            | Founder approval of the explanatory copy                                        |
-| D5  | Turning saving off asks "Keep my saved items" or "Delete them now"; delete needs a second confirmation | Makes what happens to existing items explicit                                                   | Founder approval of the dialog copy                                             |
-| D6  | Intro skip links say "Skip intro" and lead to the privacy choice                                       | The privacy choice can never be bypassed                                                        | None                                                                            |
+| ID  | Decision                                                                                                                   | Why                                                                                             | Still open                                                                      |
+| --- | -------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- |
+| D1  | Static SPA on Vercel; no server runtime                                                                                    | No feature needs a server; the simplest security policy; no beta server framework in production | None                                                                            |
+| D2  | Detach from Lovable now                                                                                                    | Volunteers need a normal Vite setup they can read and debug                                     | Lovable can still be used for throwaway stakeholder mock-ups, outside this repo |
+| D3  | Export as ZIP: readable HTML, JSON manifest, images                                                                        | Readable on any device and still machine-readable for a future re-import                        | Check how phones handle the ZIP during QA                                       |
+| D4  | Esc exits from everywhere, including text fields, the canvas and dialogs (founder, 24 Nov; replaces the earlier exception) | Leaving safely takes priority over every other page function                                    | Decided 24 Nov                                                                  |
+| D5  | Turning saving off asks "Keep my saved items" or "Delete them now"; delete needs a second confirmation                     | Makes what happens to existing items explicit                                                   | Wording approved 24 Nov                                                         |
+| D6  | Intro skip links say "Skip intro" and lead to the privacy choice                                                           | The privacy choice can never be bypassed                                                        | None                                                                            |
 
-**Proposed on 26 October, awaiting the founder:** D7, gallery sharing through one small managed service after launch. It is the only feature that would send anything off the device. See "Founder's brief of 26 October" above.
+**D7, gallery sharing (in progress).** The founder wants sharing to the Anonymous Survivor Art Gallery built, not dropped. It will be the only feature that sends anything off the device, and only artwork the visitor chooses to share. Proposed: one small managed service, image only, human moderation, a clear consent step and success or failure feedback. The service choice needs her sign-off by 5 December.
 
 ## 6. Spanish translation
 
-Goal for 30 November: every interface string is available in Spanish, and no survivor-facing guidance appears in Spanish until a reviewer approves it. Translation is done by people. Machine translation may only be used to make a first draft, and that draft is always reviewed.
+Founder decision (24 November): the Portal launches in English, with Spanish shown as "Coming Soon". Spanish is switched on only after a qualified, fluent (ideally native) speaker familiar with survivor-support terms has reviewed it. The design below is ready for that moment. Translation is done by people. Machine translation may only be used to make a first draft, and that draft is always reviewed.
 
 **Where it starts.** The prototype has two lookups. `useT()` reads a small keyed dictionary, and `useTx()` uses the English sentence itself as the key into a draft `es.ts`. Using the sentence as the key breaks silently: if someone edits the English, the Spanish disappears. That happened to the intro's Quick Exit line. There is no review status, and nothing reports missing strings.
 
@@ -250,24 +282,24 @@ The founder's brief adds 11 hours of required work, bringing the pre-launch plan
 
 ## 8. Schedule
 
-Team work starts on 26 October, and the core Portal releases on 30 November in English and Spanish. The full Art Room is a separate milestone targeting 15 January 2027. Release 1.1, the behind-the-scenes tidying deferred to make room for the founder's brief, follows by 19 February 2027.
+The core Portal launches on 30 November in English. The full Art Room and gallery sharing follow together, targeting 29 January 2027. Release 1.1, the behind-the-scenes tidying, follows in about March 2027.
 
-![Schedule from 26 Oct: core release 30 Nov, full Art Room by 15 Jan 2027, Release 1.1 by 19 Feb 2027](images/schedule-timeline.png)
+![Schedule: launch 30 Nov in English; Art Room and gallery sharing by 29 Jan 2027; Release 1.1 about March](images/schedule-timeline.png)
 
 Phases run as parallel workstreams rather than in sequence. Week 5 holds only stabilization because of Thanksgiving. At launch the Art Room ships its current three-stage canvas, labelled as an early version, and gallery sharing says it is not available yet.
 
-| Phase                                       | Original dates         | Revised dates (26 Oct)                                     | State           |
-| ------------------------------------------- | ---------------------- | ---------------------------------------------------------- | --------------- |
-| 0 Audit and alignment                       | 19–23 Oct              | 18 Oct; founder's brief reviewed 26 Oct                    | Done            |
-| 1 Shared foundation                         | 26–30 Oct              | 18 Oct                                                     | Done            |
-| 2 Saving MVP                                | 2–6 Nov                | 18 Oct; polish and brief changes in W1–W2                  | Mostly done     |
-| FAQ, About Army Pink, privacy wording (new) | Not planned            | W1–W2                                                      | Planned         |
-| Spanish translation (new)                   | Not planned            | W1–W3                                                      | Planned         |
-| 3 Core experiences                          | 9–13 Nov               | W4 (Recovery Rooms); content refactor moved to Release 1.1 | Planned         |
-| 5 Testing, security, release readiness      | 23–25 Nov              | W3–W4                                                      | Partly in place |
-| 6 Stabilization and release                 | 26–30 Nov              | W5, release 30 Nov                                         | Planned         |
-| Art Room full build and gallery spike       | 23–25 Nov, if feasible | 1 Dec–15 Jan, with a holiday break                         | Moved           |
-| Release 1.1                                 | Not planned            | By 19 Feb 2027                                             | Planned         |
+| Phase                                       | Original dates         | Revised dates (26 Oct)                                        | State           |
+| ------------------------------------------- | ---------------------- | ------------------------------------------------------------- | --------------- |
+| 0 Audit and alignment                       | 19–23 Oct              | 18 Oct; founder's brief reviewed 26 Oct                       | Done            |
+| 1 Shared foundation                         | 26–30 Oct              | 18 Oct                                                        | Done            |
+| 2 Saving MVP                                | 2–6 Nov                | 18 Oct; polish and brief changes in W1–W2                     | Mostly done     |
+| FAQ, About Army Pink, privacy wording (new) | Not planned            | W1–W2                                                         | Planned         |
+| Spanish translation (new)                   | Not planned            | W1–W3                                                         | Planned         |
+| 3 Core experiences                          | 9–13 Nov               | W4 (Recovery Rooms); content refactor moved to Release 1.1    | Planned         |
+| 5 Testing, security, release readiness      | 23–25 Nov              | W3–W4                                                         | Partly in place |
+| 6 Stabilization and release                 | 26–30 Nov              | W5, release 30 Nov                                            | Planned         |
+| Art Room full build and gallery spike       | 23–25 Nov, if feasible | 1 Dec–29 Jan with gallery sharing, holiday break 21 Dec–3 Jan | Moved           |
+| Release 1.1                                 | Not planned            | About March 2027                                              | Planned         |
 
 ## 9. Work backlog
 
@@ -291,7 +323,7 @@ Release scope is 55 developer hours in tickets of 5 hours or less, about 13 hour
 | W4   | REL-01a        | Release checklist, including the founder's QA checklist | All           | 3     | All above  | All 13 founder checks listed with how each is verified                                                                            |
 | W5   | REL-01b        | Stabilization, manual Spanish check and launch          | All           | 5     | REL-01a    | Founder acceptance; release deployed 30 Nov                                                                                       |
 
-**Deferred to Release 1.1 (target 19 February 2027).** These 57 hours are work the launch can do without. Most of it is behind-the-scenes tidying that visitors would not notice, and existing tests already cover the main flows. It is scheduled after the Art Room work.
+**Deferred to Release 1.1 (about March 2027).** These 52 hours are work the launch can do without, mostly behind-the-scenes tidying that visitors would not notice. AP-12 (analytics) is no longer here: it was built on 24 November. They follow the Art Room and gallery work.
 
 | ID       | Ticket                                                                             | Hours | Why it can wait                                                             |
 | -------- | ---------------------------------------------------------------------------------- | ----- | --------------------------------------------------------------------------- |
@@ -299,14 +331,26 @@ Release scope is 55 developer hours in tickets of 5 hours or less, about 13 hour
 | AP-14b   | Calm Room and Journals on shared components                                        | 4     | Both pages already work and save correctly                                  |
 | TR-05    | Automated Spanish layout checks                                                    | 4     | Replaced by a manual Spanish check in REL-01b                               |
 | AP-09    | Remaining security items (dependency pruning, audit)                               | 4     | Strict CSP and headers already in place                                     |
-| AP-12    | Analytics allowlist adapter                                                        | 5     | Analytics stays off until the event list is approved anyway                 |
+| AP-12    | Analytics allowlist adapter                                                        | 5     | Done 24 Nov (PR #59)                                                        |
 | TR-04    | Translator CSV export/import                                                       | 5     | Reviewers can work from the files with a developer's help                   |
 | TR-07    | Spanish fields in content JSON                                                     | 6     | Needs AP-13; content shows in English with a notice until then              |
 | AP-14c   | Decision Support and Toolkit cleanup                                               | 4     | Both pages already work and save correctly                                  |
 | AP-10b   | Browser tests per room                                                             | 3     | The main save flows are already tested                                      |
 | AP-18a/b | Art Room feasibility spike                                                         | 6     | Moves with the Art Room milestone                                           |
 
-**After launch.** December starts with the gallery sharing spike (AP-22 **new**, 4 h) and the Art Room spike (6 h), then the full Art Room build (AP-16, about 30 h). With a holiday break from 21 December to 3 January, the Art Room target stays **15 January 2027**. Gallery sharing is built only after the founder decides D7, with its own estimate from the spike. The other Release 1.1 items follow by 19 February 2027.
+**After launch: Art Room and gallery sharing, target 29 January 2027.** About 79 hours, roughly 6 weeks at 13 hours a week, with a holiday break from 21 December to 3 January.
+
+- Art Room spike (6 h) and full build (AP-16, about 30 h)
+- Gallery sharing (about 43 h):
+  - submission service with privacy safeguards (10 h)
+  - staff moderation screen with sign-in (10 h)
+  - public gallery of approved art (4 h)
+  - consent and feedback in the Art Room (6 h)
+  - security and tests (8 h)
+  - service choice and privacy review (4 h)
+  - wording (1 h)
+
+The target depends on the founder approving D7 by 5 December and naming a moderator.
 
 Week dates (revised 26 October): W1 26 Oct–1 Nov, W2 2–8 Nov, W3 9–15 Nov, W4 16–22 Nov, W5 23–29 Nov (half week).
 
@@ -347,24 +391,28 @@ This is the backlog as plain to-dos. Tick each box when its pull request is merg
 
 **W5 · 23–29 Nov (half week)**
 
-- [ ] **REL-01b** Fix last bugs, check every page in Spanish by hand, get founder sign-off and deploy on 30 November (5 h)
+- [ ] **REL-01b** Fix last bugs, check live analytics requests, get founder sign-off and deploy on 30 November (5 h)
 
 **Founder and leadership, before launch**
 
-- [ ] Decide D4: keep Esc ignored while typing and add "when you aren't typing" to FAQ #3, or make Esc always exit (by W1)
-- [ ] Decide D7: gallery sharing through a small managed service after launch (by W4)
-- [ ] Decide whether the simulated PIN lock is removed for launch (by W2)
-- [ ] Approve the wording in `docs/decisions/copy-pending-approval.md`, including interim FAQ #5 (by W3)
-- [ ] Choose the Quick Exit destination site (by W3)
-- [ ] Name an owner for real content and for Spanish review (by W1)
-- [ ] Agree that the Release 1.1 items can follow after launch (by W1)
+- [x] Decide D4: Esc works everywhere (decided 24 Nov)
+- [ ] Decide D7: service for gallery sharing (by 5 Dec)
+- [ ] Name a gallery moderator (by 5 Dec)
+- [x] Remove the simulated PIN lock for launch (decided 24 Nov)
+- [x] Approve the saving and privacy wording (24 Nov)
+- [x] Quick Exit destination: keep weather.com (24 Nov)
+- [ ] Name a qualified, fluent Spanish reviewer (TR-06)
+- [ ] Name an owner for real content
+- [ ] Choose the Vercel plan: Pro is needed for custom analytics events
 
 **After launch**
 
 - [ ] **AP-22** Gallery sharing spike: service, cost, privacy review, moderation and estimate (early December)
 - [ ] **AP-18a/b** Art Room spike: choose the drawing approach and split the build into 5-hour tickets (early December)
-- [ ] **AP-16** Build the full Art Room experience (December to 15 January 2027)
-- [ ] **Release 1.1**: AP-13a–d, AP-14b, TR-05, AP-09, AP-12, TR-04, TR-07, AP-14c, AP-10b (by 19 February 2027)
+- [ ] **AP-16** Build the full Art Room experience
+- [ ] **Gallery sharing**: submission service, moderation, public gallery, consent flow (with AP-16, by 29 January 2027)
+- [ ] **TR-06 then Spanish on**: native-speaker review, then set `SPANISH_ENABLED` to true
+- [ ] **Release 1.1**: AP-13a–d, AP-14b, TR-05, AP-09, TR-04, TR-07, AP-14c, AP-10b (about March 2027)
 
 ## 10. Release criteria
 
@@ -411,7 +459,7 @@ The biggest risk is capacity. With 4 volunteers, the 5-hour buffer is used up if
 | Risk                                                     | Effect                                   | Response                                                                                                                                   |
 | -------------------------------------------------------- | ---------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
 | A volunteer leaves or gives less than 5 h a week         | Release scope does not fit               | Next cuts, in order: AP-14a (Recovery Rooms keep their current layout), then AP-07b (basic empty state only), or move launch to 7 December |
-| Spanish reviewers not found by W4                        | Sensitive content stays English-only     | Acceptable at launch: the notice explains it; general UI still ships in draft Spanish                                                      |
+| Spanish reviewers not found by W4                        | Sensitive content stays English-only     | Launch is English-only by the founder's decision; Spanish shows as Coming Soon until reviewed                                              |
 | Real content (Library, Opportunities) not supplied by W3 | Release ships with labelled placeholders | Content owner named in W1; placeholders keep their status tags                                                                             |
 | Art Room estimate grows after the spike                  | January milestone slips                  | Ship the current three-stage canvas at launch, clearly labelled                                                                            |
 | Reviews pile up                                          | Work sits finished but unmerged          | Reviews answered within 3 days; any member may review                                                                                      |
@@ -419,19 +467,19 @@ The biggest risk is capacity. With 4 volunteers, the 5-hour buffer is used up if
 
 **Approvals needed from the founder.** These are listed in `docs/decisions/copy-pending-approval.md`.
 
-- [ ] D5 keep-or-delete dialog copy
-- [ ] Esc explanation in the intro, FAQ, privacy page and footer
-- [ ] Quick Exit destination (currently weather.com)
-- [ ] FAQ answers
-- [ ] Draft Spanish for the intro, before it is marked reviewed
-- [ ] Analytics Event Dictionary, before AP-12 can be switched on
+- [x] D5 keep-or-delete dialog copy (24 Nov)
+- [x] Esc explanation in the intro, FAQ, privacy page and footer (24 Nov)
+- [x] Quick Exit destination: weather.com (24 Nov)
+- [x] FAQ answers (26 Oct brief and 24 Nov)
+- [x] Spanish intro: held for native-speaker review (24 Nov)
+- [x] Analytics event list: the founder's original specification (24 Nov)
 
 **New from the founder's brief (26 October)**, also listed in "Founder's brief of 26 October":
 
-- [ ] D4: Esc wording in FAQ #3, or Esc always exits
-- [ ] D7: gallery sharing through a small managed service after launch
-- [ ] Interim FAQ #5 wording while gallery sharing is not available
-- [ ] Remove the simulated PIN lock for launch
+- [x] D4: Esc works everywhere (24 Nov)
+- [ ] D7: gallery sharing service (by 5 Dec)
+- [x] FAQ #5 keeps today's accurate wording until sharing works (24 Nov)
+- [x] Remove the simulated PIN lock for launch (24 Nov)
 
 **Open questions.**
 

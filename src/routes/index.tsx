@@ -288,9 +288,6 @@ function Index() {
           <h2 id="faq-h" className="text-center text-2xl font-bold">
             FAQ
           </h2>
-          <div className="mt-2 text-center">
-            <StatusTag status="placeholder" note="answers need approval" />
-          </div>
           <div className="mt-6 divide-y divide-border">
             {faqs.map((f, i) => (
               <details key={f.q} className="group py-4" open={i === 0}>
@@ -298,16 +295,31 @@ function Index() {
                   {i + 1}. {tx(f.q)}
                   <ChevronDown className="h-5 w-5 shrink-0 text-primary transition group-open:rotate-180" />
                 </summary>
-                <p className="mt-3 text-sm text-muted-foreground">{tx(f.a)}</p>
+                <p className="mt-3 text-sm text-muted-foreground">
+                  {/* Founder, 24 Nov: armypink.org is a clickable, optional link (new tab, never a redirect). */}
+                  {tx(f.a)
+                    .split("armypink.org")
+                    .flatMap((part, j) =>
+                      j === 0
+                        ? [part]
+                        : [
+                            <a
+                              key={j}
+                              href="https://armypink.org/"
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="font-semibold text-primary underline"
+                            >
+                              armypink.org
+                            </a>,
+                            part,
+                          ],
+                    )}
+                </p>
               </details>
             ))}
           </div>
         </section>
-        <p className="mx-auto mt-10 max-w-xl text-center text-xs text-muted-foreground">
-          {tx(
-            "If you're in immediate danger, call 911. To reach the National Domestic Hotline, call 1-800-799-7233 or text START to 88788.",
-          )}
-        </p>
       </main>
     </>
   );

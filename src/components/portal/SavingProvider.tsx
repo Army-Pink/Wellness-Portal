@@ -1,4 +1,5 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
+import { track } from "@/lib/analytics";
 import { STORAGE_ERROR, toStorageError } from "@/lib/storage/errors";
 import { savedItemsRepository, type SavedItemsRepository } from "@/lib/storage/repository";
 import type { SaveInput, SavedItem, SavingPreference } from "@/lib/storage/schema";
@@ -79,11 +80,14 @@ export function SavingProvider({
     save: async (input) => {
       try {
         const item = await repository.saveItem(input);
+        // Aggregate count only: the room and kind of item, never its content or ID.
+        track("save_action", { room: input.roomId, kind: input.kind });
         setItems((old) => [item, ...old]);
         setError("");
       } catch (e) {
         const storageError = toStorageError(e);
         setError(storageError.message);
+        track("error_occurred", { code: `storage-${storageError.code}` });
         throw storageError;
       }
     },
@@ -93,6 +97,7 @@ export function SavingProvider({
         if (id) await repository.deleteSavedItem(id);
         else await repository.clearSavedItems();
         setItems((old) => (id ? old.filter((x) => x.id !== id) : []));
+        track("save_deleted", { scope: id ? "one" : "all" });
         setError("");
       } catch {
         setError(DELETE_ERROR);

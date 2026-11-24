@@ -31,7 +31,7 @@ function Room() {
   const r = Route.useLoaderData();
   const [step, setStep] = useState(-1);
   useEffect(() => {
-    track("recovery_room_opened");
+    track("recovery_room_opened", { room: r.slug });
   }, []);
   const idx = recoveryRooms.findIndex((x) => x.slug === r.slug);
   const next = recoveryRooms[idx + 1];
@@ -60,7 +60,7 @@ function Room() {
               <button
                 onClick={() => {
                   setStep(0);
-                  track("recovery_exercise_started");
+                  track("recovery_exercise_started", { room: r.slug });
                 }}
                 className="mt-5 min-h-12 rounded-2xl bg-primary px-6 font-semibold text-primary-foreground"
               >

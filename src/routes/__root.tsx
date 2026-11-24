@@ -8,7 +8,9 @@ import {
   Scripts,
   type ErrorComponentProps,
 } from "@tanstack/react-router";
-import { type ReactNode } from "react";
+import { useEffect, type ReactNode } from "react";
+import { Analytics } from "@vercel/analytics/react";
+import { analyticsEnabled, beforeSend, track } from "@/lib/analytics";
 
 import appCss from "../styles.css?url";
 import { PrefsProvider } from "@/lib/prefs";
@@ -39,6 +41,7 @@ function NotFoundComponent() {
 function ErrorComponent({ error, reset }: ErrorComponentProps) {
   // Never log the error object: messages can carry user content (ADR 0001, S2).
   void error;
+  useEffect(() => track("error_occurred", { code: "page-error" }), []);
   const router = useRouter();
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
@@ -129,6 +132,7 @@ function RootComponent() {
           </div>
           <Footer />
           <Toaster />
+          {analyticsEnabled() && <Analytics beforeSend={beforeSend} />}
         </SavingProvider>
       </PrefsProvider>
     </QueryClientProvider>

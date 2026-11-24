@@ -103,8 +103,8 @@ export const es: Record<string, string> = {
   "You found a safe place.": "Encontraste un lugar seguro.",
   "Take a breath. There's no rush here.": "Respira. Aquí no hay prisa.",
   "This keeps you safe.": "Esto te mantiene segura.",
-  'Tap "Quick exit" (top corner) anytime to leave instantly for a neutral page. When you aren\'t typing, you can also press the Esc key.':
-    'Toca "Salida rápida" (en la esquina) en cualquier momento para ir de inmediato a una página neutral. Cuando no estés escribiendo, también puedes presionar la tecla Esc.',
+  'Tap "Quick exit" (top corner) anytime to leave instantly for a neutral page. You can also press the Esc key.':
+    'Toca "Salida rápida" (en la esquina) en cualquier momento para ir de inmediato a una página neutral. También puedes presionar la tecla Esc.',
   // Intro (draft; needs native-speaker review)
   "Get Started": "Comenzar",
   "You have found a safe space.": "Has encontrado un espacio seguro.",

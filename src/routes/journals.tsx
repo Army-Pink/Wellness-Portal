@@ -2,7 +2,6 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { PageShell, StatusTag } from "@/components/portal/Shell";
-import { SimulatedBadge, SimulatedPin } from "@/components/portal/Simulated";
 import { useTx } from "@/lib/prefs";
 import { toSlug } from "@/lib/storage/schema";
 import { SaveActions } from "@/components/portal/SaveActions";
@@ -97,7 +96,6 @@ function Journals() {
         </button>
         <h1 className="mt-3 font-display text-2xl sm:text-3xl">{tx(open)}</h1>
         <div className="mt-2 flex flex-wrap gap-2">
-          <SimulatedBadge what="PIN & encryption" />
           <StatusTag status="placeholder" note="prompts" />
         </div>
         <p className="mt-5 text-sm font-bold text-primary">
@@ -166,13 +164,8 @@ function Journals() {
       title="Healing Journals"
       back={{ to: "/", label: "Back" }}
       intro="Five gentle journals. Each moves through six small steps — write as much or as little as you like."
-      tags={
-        <>
-          <SimulatedBadge what="PIN & encryption" />
-        </>
-      }
     >
-      <SimulatedPin label="Create a PIN for your journals">
+      <>
         <div className="-mx-4 flex snap-x snap-mandatory items-center gap-3 overflow-x-auto px-4 py-6 sm:mx-0 sm:justify-center sm:overflow-visible sm:px-0">
           {journals.map((j) => (
             <button
@@ -196,7 +189,7 @@ function Journals() {
             </button>
           ))}
         </div>
-      </SimulatedPin>
+      </>
     </PageShell>
   );
 }
