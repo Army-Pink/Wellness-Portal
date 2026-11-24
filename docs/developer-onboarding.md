@@ -290,3 +290,4 @@ For artwork, pass a function that returns the item, so the canvas is read only w
 | Header, footer, Quick Exit, language toggle | `src/components/portal/Shell.tsx`                  |
 | Privacy choice, Save button, saving state   | `src/components/portal/`                           |
 | Security headers and policy                 | `vercel.json`, `scripts/inject-csp.mjs`            |
+| Deploy and rollback                         | `docs/runbooks/deploy.md`                          |
