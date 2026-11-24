@@ -30,7 +30,7 @@ A trauma-informed, anonymous wellness site for survivors of domestic violence, b
 - The static build goes to `dist/client/_shell.html`; Vercel rewrites every route to it (`vercel.json`).
 - Storage only through `src/lib/storage/` and `<SaveActions>` / `useSaving()`.
 - Strict CSP: `vercel.json` headers plus a post-build hash-based meta tag (`scripts/inject-csp.mjs`).
-- Tests: about 91 Vitest/RTL and 64 Playwright (desktop + mobile). The e2e fixture fails on any request to another site or any CSP violation.
+- Tests: 96 Vitest/RTL and 104 Playwright, including axe checks on every page, (desktop + mobile). The e2e fixture fails on any request to another site or any CSP violation.
 - Commands: `npm ci`, `npm run dev`, `npm test`, `npm run test:e2e`, `npm run build`, `npm run preview`. Needs npm 11; npm 10 crashes.
 
 ## Current state
@@ -45,7 +45,7 @@ A trauma-informed, anonymous wellness site for survivors of domestic violence, b
 - My Saved Items grouping and empty/error states
 - TR-03 Spanish review status (PR #57)
 
-**PR #59** (branch `founder-feedback-nov24`) is open; the team lead merges it. It applies the founder's decisions of 24 November:
+**PR #59** (merged 24 November) applied the founder's decisions of 24 November:
 
 - Esc activates Quick Exit everywhere, including while typing or with a dialog open (replaces D4).
 - Vercel Web Analytics with a strict allowlist in `src/lib/analytics.ts`, active on the deployed site only, with query strings and fragments stripped from URLs.
@@ -56,16 +56,15 @@ A trauma-informed, anonymous wellness site for survivors of domestic violence, b
 - weather.com stays the Quick Exit destination.
 - The updated plan doc.
 
-**Other open PRs:** #58 (AP-10a, axe checks). AP-17 (deploy runbook) is in progress on branch `ap-17-deploy-runbook`.
+**Also merged:** #57 (TR-03 review status) and #58 (AP-10a, axe accessibility checks on every page). AP-17 (deploy runbook) is in progress on branch `ap-17-deploy-runbook`.
 
 ## Before the 30 November launch
 
-1. Merge PR #59 (and #58 if ready).
-2. **AP-17 (#37):** first Vercel deployment and rollback runbook. **Nothing has been deployed yet.** Choose the Vercel plan: Pro is needed for custom analytics events.
-3. **REL-01a (#38):** release checklist including the founder's 13 QA checks. On the live site, confirm analytics requests go only to the Portal's own domain and carry no content.
-4. **REL-01b (#39):** stabilize and launch on 30 November.
-5. **Optional:** AP-14a (#14), TR-02b (#34).
-6. Enable branch protection on `main` (#11; repo admin only).
+1. **AP-17 (#37):** first Vercel deployment and rollback runbook. **Nothing has been deployed yet.** Choose the Vercel plan: Pro is needed for custom analytics events.
+2. **REL-01a (#38):** release checklist including the founder's 13 QA checks. On the live site, confirm analytics requests go only to the Portal's own domain and carry no content.
+3. **REL-01b (#39):** stabilize and launch on 30 November.
+4. **Optional:** AP-14a (#14), TR-02b (#34).
+5. Enable branch protection on `main` (#11; repo admin only).
 
 ## After launch
 
