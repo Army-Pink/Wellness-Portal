@@ -56,7 +56,7 @@ const calmCard = {
   desc: "Feeling Overwhelmed? Enter the Calm Room to calm, ground and settle your nervous system.",
   img: toolCalm,
   bg: "bg-slate",
-  fg: "text-slate",
+  ink: "text-tile-foreground",
 } as const;
 const artCard = {
   to: "/art-room",
@@ -64,7 +64,7 @@ const artCard = {
   desc: "Want to express yourself? Create freely in the Art Room. Why I left, where I'm going.",
   img: toolArt,
   bg: "bg-plum",
-  fg: "text-plum",
+  ink: "text-tile-foreground",
 } as const;
 const tools = [
   {
@@ -73,7 +73,7 @@ const tools = [
     desc: "Gentle, guided reflections. One step at a time.",
     img: toolJournals,
     bg: "bg-primary",
-    fg: "text-primary",
+    ink: "text-on-tile",
   },
   {
     to: "/decision-support",
@@ -81,7 +81,7 @@ const tools = [
     desc: "Need to make a tough decision? We're here to help.",
     img: toolDecision,
     bg: "bg-teal",
-    fg: "text-teal",
+    ink: "text-on-tile",
   },
   {
     to: "/recovery-rooms",
@@ -89,7 +89,7 @@ const tools = [
     desc: "Healing spaces for sleep, grief, confidence & more.",
     img: toolRooms,
     bg: "bg-lavender",
-    fg: "text-lavender",
+    ink: "text-tile-foreground",
   },
   {
     to: "/toolkit",
@@ -97,18 +97,18 @@ const tools = [
     desc: "Practical, action-oriented support.",
     img: toolToolkit,
     bg: "bg-coral",
-    fg: "text-coral",
+    ink: "text-on-tile",
   },
 ] as const;
 
-type Card = { to: string; title: string; desc: string; img: string; bg: string; fg: string };
+type Card = { to: string; title: string; desc: string; img: string; bg: string; ink: string };
 // Small compact card on phones; enlarged card with an Enter button from tablet up.
 function PortalCard({ c }: { c: Card }) {
   const tx = useTx();
   return (
     <Link
       to={c.to}
-      className={`group block rounded-3xl ${c.bg} p-4 text-tile-foreground shadow-lg transition hover:-translate-y-1 hover:brightness-105 sm:p-8`}
+      className={`group block rounded-3xl ${c.bg} p-4 ${c.ink} shadow-lg transition hover:-translate-y-1 hover:brightness-105 sm:p-8`}
     >
       <h3 className="text-center text-base font-bold sm:hidden">{tx(c.title)}</h3>
       <div className="mt-3 flex items-center gap-3 sm:mt-0 sm:gap-8">
@@ -123,9 +123,7 @@ function PortalCard({ c }: { c: Card }) {
         <div className="min-w-0 flex-1 sm:text-center">
           <h3 className="hidden text-2xl font-bold sm:block">{tx(c.title)}</h3>
           <p className="text-xs leading-relaxed sm:mt-3 sm:text-left sm:text-base">{tx(c.desc)}</p>
-          <span
-            className={`mt-5 hidden min-h-12 items-center rounded-full bg-tile-foreground px-16 text-lg font-bold ${c.fg} shadow-[0_0_20px_-4px_var(--color-tile-foreground)] sm:inline-flex`}
-          >
+          <span className="mt-5 hidden min-h-12 items-center rounded-full bg-tile-foreground px-16 text-lg font-bold text-on-tile shadow-[0_0_20px_-4px_var(--color-tile-foreground)] sm:inline-flex">
             {tx("Enter")}
           </span>
         </div>

@@ -105,9 +105,11 @@ export function Header() {
   }, []);
   return (
     <>
-      {/* Quick Exit follows the visitor down the page once the top bar scrolls away. */}
+      {/* Quick Exit follows the visitor down the page once the top bar scrolls away.
+          When parked off-screen it must not stay keyboard-focusable (axe aria-hidden-focus). */}
       <div
         aria-hidden={!floating}
+        inert={!floating ? true : undefined}
         className={`fixed right-4 top-4 z-50 transition-all duration-300 sm:right-6 ${floating ? "translate-y-0 opacity-100" : "pointer-events-none -translate-y-4 opacity-0"}`}
       >
         <QuickExitButton className="shadow-xl" />
@@ -142,8 +144,10 @@ export function Header() {
                     to={n.to}
                     activeOptions={{ exact: n.to === "/" }}
                     onClick={() => setOpen(false)}
-                    className="block rounded-full px-3 py-2 text-sm font-medium text-muted-foreground hover:bg-secondary hover:text-secondary-foreground"
-                    activeProps={{ className: "bg-secondary text-secondary-foreground" }}
+                    className="block rounded-full px-3 py-2 text-sm font-medium text-muted-foreground hover:bg-secondary hover:text-foreground"
+                    activeProps={{
+                      className: "bg-card text-foreground ring-1 ring-primary/50",
+                    }}
                   >
                     {t(n.k)}
                   </Link>
@@ -157,8 +161,10 @@ export function Header() {
                   <Link
                     to={n.to}
                     onClick={() => setOpen(false)}
-                    className="block rounded-full px-3 py-2 text-sm font-medium text-muted-foreground hover:bg-secondary"
-                    activeProps={{ className: "bg-secondary text-secondary-foreground" }}
+                    className="block rounded-full px-3 py-2 text-sm font-medium text-muted-foreground hover:bg-secondary hover:text-foreground"
+                    activeProps={{
+                      className: "bg-card text-foreground ring-1 ring-primary/50",
+                    }}
                   >
                     {t(n.k)}
                   </Link>
@@ -215,10 +221,11 @@ export function Footer() {
 }
 
 const statusStyle: Record<Status, [string, string]> = {
-  confirmed: ["Confirmed", "bg-teal/15 text-teal border-teal/40"],
-  provisional: ["Provisional UX", "bg-lavender/15 text-lavender border-lavender/40"],
-  placeholder: ["Placeholder content", "bg-coral/15 text-coral border-coral/50"],
-  approval: ["Needs approval", "bg-primary/10 text-primary border-primary/40"],
+  // Foreground colors chosen for WCAG contrast on both light and dark page backgrounds.
+  confirmed: ["Confirmed", "bg-teal/20 text-foreground border-teal/50"],
+  provisional: ["Provisional UX", "bg-lavender/20 text-foreground border-lavender/50"],
+  placeholder: ["Placeholder content", "bg-coral/20 text-foreground border-coral/50"],
+  approval: ["Needs approval", "bg-primary/15 text-foreground border-primary/50"],
 };
 
 export function StatusTag({ status, note }: { status: Status; note?: string }) {

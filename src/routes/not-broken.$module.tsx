@@ -39,6 +39,8 @@ function Module() {
         <div
           className="mb-4 h-2 overflow-hidden rounded-full bg-muted"
           role="progressbar"
+          aria-label="Module progress"
+          aria-valuemin={0}
           aria-valuenow={s}
           aria-valuemax={m.steps}
         >

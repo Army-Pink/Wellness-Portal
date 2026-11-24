@@ -1,0 +1,290 @@
+{
+  "nav.quickExit": {
+    "status": "draft",
+    "sensitivity": "general"
+  },
+  "nav.home": {
+    "status": "draft",
+    "sensitivity": "general"
+  },
+  "nav.savedItems": {
+    "status": "draft",
+    "sensitivity": "general"
+  },
+  "nav.artRoom": {
+    "status": "draft",
+    "sensitivity": "general"
+  },
+  "nav.calmRoom": {
+    "status": "draft",
+    "sensitivity": "general"
+  },
+  "nav.recoveryRooms": {
+    "status": "draft",
+    "sensitivity": "general"
+  },
+  "nav.library": {
+    "status": "draft",
+    "sensitivity": "general"
+  },
+  "nav.notBroken": {
+    "status": "draft",
+    "sensitivity": "general"
+  },
+  "nav.opportunities": {
+    "status": "draft",
+    "sensitivity": "general"
+  },
+  "nav.partners": {
+    "status": "draft",
+    "sensitivity": "general"
+  },
+  "nav.gallery": {
+    "status": "draft",
+    "sensitivity": "general"
+  },
+  "nav.privacy": {
+    "status": "draft",
+    "sensitivity": "general"
+  },
+  "nav.menu": {
+    "status": "draft",
+    "sensitivity": "general"
+  },
+  "action.back": {
+    "status": "draft",
+    "sensitivity": "general"
+  },
+  "action.explore": {
+    "status": "draft",
+    "sensitivity": "general"
+  },
+  "action.begin": {
+    "status": "draft",
+    "sensitivity": "general"
+  },
+  "action.gotIt": {
+    "status": "draft",
+    "sensitivity": "general"
+  },
+  "action.okay": {
+    "status": "draft",
+    "sensitivity": "general"
+  },
+  "action.next": {
+    "status": "draft",
+    "sensitivity": "general"
+  },
+  "action.skip": {
+    "status": "draft",
+    "sensitivity": "general"
+  },
+  "action.saveDevice": {
+    "status": "draft",
+    "sensitivity": "general"
+  },
+  "action.emailMe": {
+    "status": "draft",
+    "sensitivity": "general"
+  },
+  "action.deleteSaved": {
+    "status": "draft",
+    "sensitivity": "general"
+  },
+  "action.play": {
+    "status": "draft",
+    "sensitivity": "general"
+  },
+  "action.pause": {
+    "status": "draft",
+    "sensitivity": "general"
+  },
+  "action.captions": {
+    "status": "draft",
+    "sensitivity": "general"
+  },
+  "settings.title": {
+    "status": "draft",
+    "sensitivity": "general"
+  },
+  "settings.light": {
+    "status": "draft",
+    "sensitivity": "general"
+  },
+  "settings.dark": {
+    "status": "draft",
+    "sensitivity": "general"
+  },
+  "settings.largeText": {
+    "status": "draft",
+    "sensitivity": "general"
+  },
+  "settings.reduceMotion": {
+    "status": "draft",
+    "sensitivity": "general"
+  },
+  "nav.moreTools": {
+    "status": "draft",
+    "sensitivity": "general"
+  },
+  "nav.journals": {
+    "status": "draft",
+    "sensitivity": "general"
+  },
+  "nav.decisionSupport": {
+    "status": "draft",
+    "sensitivity": "general"
+  },
+  "nav.toolkit": {
+    "status": "draft",
+    "sensitivity": "general"
+  },
+  "nav.partnerSessions": {
+    "status": "draft",
+    "sensitivity": "general"
+  },
+  "action.cancel": {
+    "status": "draft",
+    "sensitivity": "general"
+  },
+  "action.deletePermanently": {
+    "status": "draft",
+    "sensitivity": "general"
+  },
+  "action.deleting": {
+    "status": "draft",
+    "sensitivity": "general"
+  },
+  "privacy.title": {
+    "status": "draft",
+    "sensitivity": "sensitive"
+  },
+  "privacy.intro": {
+    "status": "draft",
+    "sensitivity": "sensitive"
+  },
+  "privacy.saveDevice": {
+    "status": "draft",
+    "sensitivity": "general"
+  },
+  "privacy.saveDeviceHelp": {
+    "status": "draft",
+    "sensitivity": "sensitive"
+  },
+  "privacy.continueWithout": {
+    "status": "draft",
+    "sensitivity": "general"
+  },
+  "privacy.continueWithoutHelp": {
+    "status": "draft",
+    "sensitivity": "sensitive"
+  },
+  "privacy.deleteAllTitle": {
+    "status": "draft",
+    "sensitivity": "sensitive"
+  },
+  "privacy.cannotUndo": {
+    "status": "draft",
+    "sensitivity": "sensitive"
+  },
+  "privacy.keepTitle": {
+    "status": "draft",
+    "sensitivity": "sensitive"
+  },
+  "privacy.keepBody": {
+    "status": "draft",
+    "sensitivity": "sensitive"
+  },
+  "privacy.deleteNow": {
+    "status": "draft",
+    "sensitivity": "general"
+  },
+  "privacy.keepItems": {
+    "status": "draft",
+    "sensitivity": "general"
+  },
+  "saved.statusDevice": {
+    "status": "draft",
+    "sensitivity": "sensitive"
+  },
+  "saved.statusNone": {
+    "status": "draft",
+    "sensitivity": "sensitive"
+  },
+  "saved.loading": {
+    "status": "draft",
+    "sensitivity": "general"
+  },
+  "saved.roomFilter": {
+    "status": "draft",
+    "sensitivity": "general"
+  },
+  "saved.allRooms": {
+    "status": "draft",
+    "sensitivity": "general"
+  },
+  "saved.download": {
+    "status": "draft",
+    "sensitivity": "general"
+  },
+  "saved.deleteAll": {
+    "status": "draft",
+    "sensitivity": "general"
+  },
+  "saved.deleteItem": {
+    "status": "draft",
+    "sensitivity": "general"
+  },
+  "saved.deleteOneTitle": {
+    "status": "draft",
+    "sensitivity": "sensitive"
+  },
+  "saved.openItem": {
+    "status": "draft",
+    "sensitivity": "general"
+  },
+  "saved.returnToActivity": {
+    "status": "draft",
+    "sensitivity": "general"
+  },
+  "saved.empty": {
+    "status": "draft",
+    "sensitivity": "general"
+  },
+  "notice.translationPending": {
+    "status": "draft",
+    "sensitivity": "general"
+  },
+  "saved.cannotReopen": {
+    "status": "draft",
+    "sensitivity": "sensitive"
+  },
+  "saved.room": {
+    "status": "draft",
+    "sensitivity": "general"
+  },
+  "saved.loadFailed": {
+    "status": "draft",
+    "sensitivity": "sensitive"
+  },
+  "saved.roomEmpty": {
+    "status": "draft",
+    "sensitivity": "general"
+  },
+  "saved.turnSavingOff": {
+    "status": "draft",
+    "sensitivity": "general"
+  },
+  "saved.saveOnDevice": {
+    "status": "draft",
+    "sensitivity": "general"
+  },
+  "privacy.turnSavingOff": {
+    "status": "draft",
+    "sensitivity": "general"
+  },
+  "privacy.turnSavingOffHelp": {
+    "status": "draft",
+    "sensitivity": "sensitive"
+  }
+}

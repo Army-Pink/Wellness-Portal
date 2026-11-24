@@ -41,7 +41,7 @@ function BreatheDisc({ p, onTap }: { p: number; onTap: () => void }) {
       aria-label={`${phases[p]} — tap for the next breath`}
       className={`grid h-56 w-56 place-items-center rounded-full transition-all duration-700 sm:h-64 sm:w-64 ${inhale ? "bg-slate/30 p-6" : "p-0"}`}
     >
-      <span className="grid h-full w-full place-items-center rounded-full bg-slate text-2xl font-bold text-tile-foreground shadow-[0_0_40px_-8px_var(--slate)] ring-4 ring-slate/25 transition-all duration-700 sm:text-3xl">
+      <span className="grid h-full w-full place-items-center rounded-full bg-slate text-2xl font-bold text-tile-foreground shadow-[0_0_40px_-8px_var(--color-slate)] ring-4 ring-slate/25 transition-all duration-700 sm:text-3xl">
         {phases[p]}
       </span>
     </button>

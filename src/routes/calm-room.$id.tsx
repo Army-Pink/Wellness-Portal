@@ -82,7 +82,7 @@ function Player() {
             onChange={(e) => setPos(+e.target.value)}
             className="w-full accent-[var(--calm-foreground)]"
           />
-          <div className="mt-1 flex justify-between text-xs opacity-80">
+          <div className="mt-1 flex justify-between text-xs text-calm-foreground">
             <span>{Math.round(pos)}%</span>
             <span>{m.length}</span>
           </div>

@@ -173,7 +173,7 @@ function ArtRoom() {
               aria-current={stage === i}
               className={`w-full rounded-2xl px-3 py-3 text-left text-sm font-semibold transition ${stage === i ? "bg-primary text-primary-foreground shadow-lg" : "bg-secondary text-secondary-foreground hover:brightness-95"}`}
             >
-              <span className="block text-xs opacity-75">Stage {i + 1}</span>
+              <span className="block text-xs text-current">Stage {i + 1}</span>
               {s.title}
             </button>
           </li>

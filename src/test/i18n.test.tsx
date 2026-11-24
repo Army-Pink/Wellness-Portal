@@ -2,8 +2,20 @@ import { act, fireEvent, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it } from "vitest";
 import en from "@/content/i18n/en.json";
 import es from "@/content/i18n/es.json";
-import { isLang, translate, type MessageKey } from "@/lib/i18n";
+import esMeta from "@/content/i18n/es.meta.json";
+import {
+  canShowSpanish,
+  isLang,
+  messageMeta,
+  reviewStatuses,
+  sensitivities,
+  translate,
+  type MessageKey,
+  type MessageMeta,
+} from "@/lib/i18n";
 import { PrefsProvider, usePrefs } from "@/lib/prefs";
+
+const meta = esMeta as Record<MessageKey, MessageMeta>;
 
 describe("typed catalogs", () => {
   it("loads en.json and es.json with stable dotted keys", () => {
@@ -16,6 +28,14 @@ describe("typed catalogs", () => {
   it("es.json has no keys that en.json lacks", () => {
     const known = new Set(Object.keys(en));
     expect(Object.keys(es).filter((k) => !known.has(k))).toEqual([]);
+  });
+
+  it("es.meta.json covers every English key with a valid status and sensitivity", () => {
+    expect(Object.keys(meta).sort()).toEqual(Object.keys(en).sort());
+    for (const [key, entry] of Object.entries(meta)) {
+      expect(reviewStatuses, key).toContain(entry.status);
+      expect(sensitivities, key).toContain(entry.sensitivity);
+    }
   });
 
   it("rejects unknown keys at compile time", () => {
@@ -63,6 +83,47 @@ describe("translate", () => {
     expect(isLang("es")).toBe(true);
     expect(isLang("fr")).toBe(false);
     expect(isLang(null)).toBe(false);
+  });
+});
+
+describe("review status and sensitive fallback (TR-03)", () => {
+  const general = "nav.home" satisfies MessageKey;
+  const sensitive = "privacy.keepBody" satisfies MessageKey;
+
+  afterEach(() => {
+    meta[general] = { status: "draft", sensitivity: "general" };
+    meta[sensitive] = { status: "draft", sensitivity: "sensitive" };
+  });
+
+  it("shows draft, reviewed and approved Spanish for general strings", () => {
+    for (const status of reviewStatuses) {
+      meta[general] = { status, sensitivity: "general" };
+      expect(canShowSpanish(general)).toBe(true);
+      expect(translate("es", general)).toBe("Inicio");
+    }
+  });
+
+  it("keeps sensitive draft and reviewed strings in English", () => {
+    expect(messageMeta(sensitive).sensitivity).toBe("sensitive");
+    for (const status of ["draft", "reviewed"] as const) {
+      meta[sensitive] = { status, sensitivity: "sensitive" };
+      expect(canShowSpanish(sensitive)).toBe(false);
+      expect(translate("es", sensitive)).toBe(en[sensitive]);
+      expect(translate("es", sensitive)).not.toBe(es[sensitive as keyof typeof es]);
+    }
+  });
+
+  it("shows sensitive Spanish only when approved", () => {
+    meta[sensitive] = { status: "approved", sensitivity: "sensitive" };
+    expect(canShowSpanish(sensitive)).toBe(true);
+    expect(translate("es", sensitive)).toBe(es[sensitive as keyof typeof es]);
+  });
+
+  it("never shows unapproved Spanish for the live sensitive catalog entries", () => {
+    const leaked = (Object.keys(en) as MessageKey[]).filter(
+      (key) => messageMeta(key).sensitivity === "sensitive" && canShowSpanish(key),
+    );
+    expect(leaked).toEqual([]);
   });
 });
 
