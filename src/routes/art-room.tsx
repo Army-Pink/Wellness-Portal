@@ -4,6 +4,7 @@ import { Brush, Eraser, Undo2, Trash2, ArrowRight } from "lucide-react";
 import { PageShell, StatusTag } from "@/components/portal/Shell";
 import { SaveActions } from "@/components/portal/SaveActions";
 import { track } from "@/lib/analytics";
+import { CANVAS_HEIGHT, CANVAS_WIDTH, Drawing, toCanvasPoint } from "@/lib/drawing";
 
 export const Route = createFileRoute("/art-room")({
   head: () => ({
@@ -59,80 +60,64 @@ function Canvas({
   canvasRef: RefObject<HTMLCanvasElement | null>;
 }) {
   const ref = canvasRef;
-  const drawing = useRef(false);
-  const history = useRef<ImageData[]>([]);
+  const model = useRef<Drawing | null>(null);
+  const activePointer = useRef<number | null>(null);
 
-  const ctx = () => ref.current?.getContext("2d") ?? null;
   useEffect(() => {
     const c = ref.current;
     if (!c) return;
-    const r = c.getBoundingClientRect();
-    c.width = r.width * 2;
-    c.height = r.height * 2;
-    ctx()?.scale(2, 2);
-  }, []);
+    model.current = new Drawing(c);
+    // Finish a stroke if the window loses focus mid-stroke, so it is never left half-open.
+    const stop = () => {
+      activePointer.current = null;
+      model.current?.end();
+    };
+    window.addEventListener("blur", stop);
+    return () => {
+      window.removeEventListener("blur", stop);
+      model.current = null;
+    };
+  }, [ref]);
   useEffect(() => {
-    if (clearKey) {
-      const c = ref.current;
-      if (!c) return;
-      ctx()?.clearRect(0, 0, c.width, c.height);
-      history.current = [];
-    }
+    if (clearKey) model.current?.clear();
   }, [clearKey]);
   useEffect(() => {
-    if (undoKey) {
-      const last = history.current.pop();
-      const g = ctx();
-      if (g && last) g.putImageData(last, 0, 0);
-      else if (g && ref.current) g.clearRect(0, 0, ref.current.width, ref.current.height);
-    }
+    if (undoKey) model.current?.undo();
   }, [undoKey]);
 
-  const pos = (e: React.PointerEvent) => {
-    const r = e.currentTarget.getBoundingClientRect();
-    return [e.clientX - r.left, e.clientY - r.top] as const;
-  };
-  const down = (e: React.PointerEvent) => {
-    const g = ctx();
-    const c = ref.current;
-    if (!g || !c) return;
-    history.current.push(g.getImageData(0, 0, c.width, c.height));
-    if (history.current.length > 30) history.current.shift();
-    drawing.current = true;
-    c.setPointerCapture(e.pointerId);
-    const [x, y] = pos(e);
-    g.beginPath();
-    g.moveTo(x, y);
-    g.lineTo(x + 0.1, y + 0.1);
-    style(g);
-    g.stroke();
-  };
-  const style = (g: CanvasRenderingContext2D) => {
-    g.lineCap = "round";
-    g.lineJoin = "round";
-    g.lineWidth = size;
-    g.globalCompositeOperation = eraser ? "destination-out" : "source-over";
-    g.strokeStyle =
+  const point = (e: React.PointerEvent<HTMLCanvasElement>) =>
+    toCanvasPoint(e.clientX, e.clientY, e.currentTarget.getBoundingClientRect());
+  const down = (e: React.PointerEvent<HTMLCanvasElement>) => {
+    // One finger or pen at a time: a resting palm or a second touch must not draw.
+    if (activePointer.current !== null || !model.current) return;
+    if (e.pointerType === "mouse" && e.button !== 0) return;
+    activePointer.current = e.pointerId;
+    e.currentTarget.setPointerCapture(e.pointerId);
+    const resolved =
       getComputedStyle(document.documentElement).getPropertyValue(color).trim() || "#e46";
+    model.current.begin(point(e), { color: resolved, size, eraser });
   };
-  const move = (e: React.PointerEvent) => {
-    if (!drawing.current) return;
-    const g = ctx();
-    if (!g) return;
-    const [x, y] = pos(e);
-    style(g);
-    g.lineTo(x, y);
-    g.stroke();
+  const move = (e: React.PointerEvent<HTMLCanvasElement>) => {
+    if (e.pointerId !== activePointer.current) return;
+    model.current?.extend(point(e));
+  };
+  const finish = (e: React.PointerEvent<HTMLCanvasElement>) => {
+    if (e.pointerId !== activePointer.current) return;
+    activePointer.current = null;
+    model.current?.end();
   };
 
   return (
     <canvas
       ref={ref}
+      width={CANVAS_WIDTH}
+      height={CANVAS_HEIGHT}
       aria-label="Drawing canvas"
       onPointerDown={down}
       onPointerMove={move}
-      onPointerUp={() => (drawing.current = false)}
-      onPointerLeave={() => (drawing.current = false)}
+      onPointerUp={finish}
+      onPointerCancel={finish}
+      onLostPointerCapture={finish}
       className="aspect-[4/3] w-full touch-none cursor-crosshair rounded-2xl border-2 border-dashed bg-background"
     />
   );
