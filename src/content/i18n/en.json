@@ -70,5 +70,32 @@
   "saved.turnSavingOff": "Turn Saving Off",
   "saved.saveOnDevice": "Save on This Device",
   "privacy.turnSavingOff": "Turn Saving Off",
-  "privacy.turnSavingOffHelp": "Stops future saves. Items you already saved stay on this device until you delete them."
+  "privacy.turnSavingOffHelp": "Stops future saves. Items you already saved stay on this device until you delete them.",
+  "art": {
+    "meta": {
+      "title": "The Art Room — Wellness Portal",
+      "description": "An interactive creative journey: Why I Left → Where I'm Going."
+    },
+    "title": "The Art Room",
+    "intro": "Why I Left → Where I'm Going. An interactive creative journey to reflect, express yourself, and imagine what comes next.",
+    "stages": [
+      {
+        "title": "Why I Left",
+        "prompt": "Placeholder prompt — creative prompts to be written and approved."
+      },
+      {
+        "title": "Where I Am",
+        "prompt": "Placeholder prompt — creative prompts to be written and approved."
+      },
+      {
+        "title": "Where I'm Going",
+        "prompt": "Placeholder prompt — creative prompts to be written and approved."
+      }
+    ],
+    "canvas": {
+      "colors": "Colors",
+      "brushSize": "Brush size"
+    },
+    "saveDisclaimer": "Your drawing is not saved automatically. Saving keeps a copy in this browser only; artwork is never sent to the gallery."
+  }
 }

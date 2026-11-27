@@ -65,5 +65,32 @@
   "saved.cannotReopen": "Este elemento ya no se puede reabrir como actividad.",
   "saved.loadFailed": "No se pudieron cargar los elementos guardados desde este navegador. No se ha eliminado ni enviado nada.",
   "saved.roomEmpty": "No hay nada guardado en esta sala.",
-  "saved.room": "Sala"
+  "saved.room": "Sala",
+  "art": {
+    "meta": {
+      "title": "Sala de Arte — Welleness Portal",
+      "description": "Un recorrido creativo e interactivo para reflexionar, expresarte e imaginar lo que viene."
+    },
+    "title": "Sala de Arte",
+    "intro": "Por qué me fui → A dónde voy. Un recorrido creativo e interactivo para reflexionar, expresarte e imaginar lo que viene.",
+    "stages": [
+      {
+        "title": "Por Qué Me Fui",
+        "prompt": "Placeholder prompt — creative prompts to be written and approved."
+      },
+      {
+        "title": "Dónde Estoy",
+        "prompt": "Placeholder prompt — creative prompts to be written and approved."
+      },
+      {
+        "title": "A Dónde Voy",
+        "prompt": "Placeholder prompt — creative prompts to be written and approved."
+      }
+    ],
+    "canvas": {
+      "colors": "Colores",
+      "brushSize": "Tamaño de pincel"
+    },
+    "saveDisclaimer": "Su dibujo no se guarda automáticamente. Al guardarlo, solo se conserva una copia en este navegador; la obra nunca se envía a la galería."
+  }
 }
