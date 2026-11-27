@@ -45,23 +45,23 @@ type Primitive = string | number | boolean | null | undefined;
 type Paths<T> = T extends Primitive
   ? never
   : T extends readonly unknown[]
-  ? never
-  : {
-    [K in keyof T & string]: T[K] extends Primitive
-    ? K
-    : T[K] extends readonly unknown[]
-    ? K // array leaves are addressable as a whole
-    : `${K}.${Paths<T[K]>}`;
-  }[keyof T & string];
+    ? never
+    : {
+        [K in keyof T & string]: T[K] extends Primitive
+          ? K
+          : T[K] extends readonly unknown[]
+            ? K // array leaves are addressable as a whole
+            : `${K}.${Paths<T[K]>}`;
+      }[keyof T & string];
 
 /** The value type at a given dotted path. Used to constrain results to strings. */
 type ValueAt<T, P extends string> = P extends `${infer Head}.${infer Rest}`
   ? Head extends keyof T
-  ? ValueAt<T[Head], Rest>
-  : never
+    ? ValueAt<T[Head], Rest>
+    : never
   : P extends keyof T
-  ? T[P]
-  : never;
+    ? T[P]
+    : never;
 
 /** Only keep paths whose leaf value is a string. */
 type StringPaths<T> = {
@@ -71,8 +71,8 @@ type StringPaths<T> = {
 type DeepPartial<T> = T extends string
   ? string | undefined
   : T extends readonly unknown[]
-  ? T // arrays must be complete if present
-  : { [K in keyof T]?: DeepPartial<T[K]> };
+    ? T // arrays must be complete if present
+    : { [K in keyof T]?: DeepPartial<T[K]> };
 
 type Catalog = DeepPartial<typeof en>;
 
